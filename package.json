@@ -1,7 +1,7 @@
 {
-    "name": "roomie",
+    "name": "mypass",
     "version": "0.0.0",
-    "description": "Description for roomie",
+    "description": "Description for mypass",
     "private": true,
     "license": "UNLICENSED",
     "cacheDirectories": [

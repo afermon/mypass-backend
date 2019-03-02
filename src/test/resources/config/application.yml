@@ -16,12 +16,12 @@
 
 spring:
     application:
-        name: roomie
+        name: mypass
     cache:
         type: simple
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:roomie;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        url: jdbc:h2:mem:mypass;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
         name:
         username:
         password:

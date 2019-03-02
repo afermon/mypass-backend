@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 
-import { RoomieTestModule } from '../../../test.module';
+import { MyPassTestModule } from '../../../test.module';
 import { LogsComponent } from 'app/admin/logs/logs.component';
 import { LogsService } from 'app/admin/logs/logs.service';
 import { ITEMS_PER_PAGE } from 'app/shared';
@@ -16,7 +16,7 @@ describe('Component Tests', () => {
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [RoomieTestModule],
+                imports: [MyPassTestModule],
                 declarations: [LogsComponent],
                 providers: [LogsService]
             })

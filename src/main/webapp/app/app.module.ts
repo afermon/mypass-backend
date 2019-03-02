@@ -11,12 +11,12 @@ import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { RoomieSharedModule } from 'app/shared';
-import { RoomieCoreModule } from 'app/core';
-import { RoomieAppRoutingModule } from './app-routing.module';
-import { RoomieHomeModule } from './home/home.module';
-import { RoomieAccountModule } from './account/account.module';
-import { RoomieEntityModule } from './entities/entity.module';
+import { MyPassSharedModule } from 'app/shared';
+import { MyPassCoreModule } from 'app/core';
+import { MyPassAppRoutingModule } from './app-routing.module';
+import { MyPassHomeModule } from './home/home.module';
+import { MyPassAccountModule } from './account/account.module';
+import { MyPassEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
@@ -24,7 +24,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
 @NgModule({
     imports: [
         BrowserModule,
-        RoomieAppRoutingModule,
+        MyPassAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),
         NgJhipsterModule.forRoot({
             // set below to true to make alerts look like toast
@@ -33,12 +33,12 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
             i18nEnabled: true,
             defaultI18nLang: 'en'
         }),
-        RoomieSharedModule.forRoot(),
-        RoomieCoreModule,
-        RoomieHomeModule,
-        RoomieAccountModule,
+        MyPassSharedModule.forRoot(),
+        MyPassCoreModule,
+        MyPassHomeModule,
+        MyPassAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
-        RoomieEntityModule
+        MyPassEntityModule
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
     providers: [
@@ -65,7 +65,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
     ],
     bootstrap: [JhiMainComponent]
 })
-export class RoomieAppModule {
+export class MyPassAppModule {
     constructor(private dpConfig: NgbDatepickerConfig) {
         this.dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };
     }

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { RoomieSharedLibsModule, FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent } from './';
+import { MyPassSharedLibsModule, FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent } from './';
 
 @NgModule({
-    imports: [RoomieSharedLibsModule],
+    imports: [MyPassSharedLibsModule],
     declarations: [FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent],
-    exports: [RoomieSharedLibsModule, FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent]
+    exports: [MyPassSharedLibsModule, FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent]
 })
-export class RoomieSharedCommonModule {}
+export class MyPassSharedCommonModule {}
