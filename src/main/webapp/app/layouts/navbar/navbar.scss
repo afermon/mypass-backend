@@ -24,14 +24,18 @@ Navbar
     }
 }
 
+.navbar-title {
+    text-transform: none !important;
+}
+
 /* ==========================================================================
 Logo styles
 ========================================================================== */
 .logo-img {
-    height: 40px;
-    width: 180px;
+    height: 45px;
+    width: 45px;
     display: inline-block;
     vertical-align: middle;
-    background: url('../../../content/images/roomie-logo-white.png') no-repeat center center;
+    background: url('../../../content/images/mypass.png') no-repeat center center;
     background-size: contain;
 }

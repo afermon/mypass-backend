@@ -1,7 +1,8 @@
-<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg" [ngClass]="{'navbar-transparent navbar-light headroom': this.router.url === '/', 'navbar-dark bg-orange fixed-top':  this.router.url !== '/'}">
+<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg" [ngClass]="{'navbar-transparent navbar-light headroom': this.router.url === '/', 'navbar-dark bg-primary fixed-top':  this.router.url !== '/'}">
     <div class="container">
         <a class="navbar-brand mr-lg-5" routerLink="/" (click)="collapseNavbar()">
             <span class="logo-img"></span>
+            <span jhiTranslate="global.title" class="navbar-title">MyPass</span>
         </a>
         <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
             <fa-icon icon="bars"></fa-icon>
@@ -50,6 +51,24 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+                        <li>
+                        <a class="dropdown-item" routerLink="secret" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.secret">Secret</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="folder" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.folder">Folder</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="notification" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.notification">Notification</span>
+                        </a>
+                    </li>
                         <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                     </ul>
                 </li>

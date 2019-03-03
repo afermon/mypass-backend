@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="folder">
+            <h2><span jhiTranslate="mypassApp.folder.detail.title">Folder</span> {{folder.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="mypassApp.folder.name">Name</span></dt>
+                <dd>
+                    <span>{{folder.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="mypassApp.folder.icon">Icon</span></dt>
+                <dd>
+                    <span>{{folder.icon}}</span>
+                </dd>
+                <dt><span jhiTranslate="mypassApp.folder.key">Key</span></dt>
+                <dd>
+                    <span>{{folder.key}}</span>
+                </dd>
+                <dt><span jhiTranslate="mypassApp.folder.created">Created</span></dt>
+                <dd>
+                    <span>{{folder.created}}</span>
+                </dd>
+                <dt><span jhiTranslate="mypassApp.folder.modified">Modified</span></dt>
+                <dd>
+                    <span>{{folder.modified}}</span>
+                </dd>
+                <dt><span jhiTranslate="mypassApp.folder.owner">Owner</span></dt>
+                <dd>
+                    {{folder.ownerLogin}}
+                </dd>
+                <dt><span jhiTranslate="mypassApp.folder.sharedWith">Shared With</span></dt>
+                <dd>
+                    <span *ngFor="let sharedWith of folder.sharedWiths; let last = last">
+                        {{sharedWith.login}}{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/folder', folder.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

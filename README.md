@@ -1,4 +1,4 @@
-# roomie
+# mypass
 
 This application was generated using JHipster 5.7.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.7.2](https://www.jhipster.tech/documentation-archive/v5.7.2).
 
@@ -89,7 +89,7 @@ will generate few files:
 
 ## Building for production
 
-To optimize the roomie application for production, run:
+To optimize the mypass application for production, run:
 
     ./mvnw -Pprod clean package
 

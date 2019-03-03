@@ -1,14 +1,14 @@
 {
     "generator-jhipster": {
         "promptValues": {
-            "packageName": "com.cosmicode.roomie",
+            "packageName": "com.cosmicode.mypass",
             "nativeLanguage": "en"
         },
         "jhipsterVersion": "5.7.2",
         "applicationType": "monolith",
-        "baseName": "roomie",
-        "packageName": "com.cosmicode.roomie",
-        "packageFolder": "com/cosmicode/roomie",
+        "baseName": "mypass",
+        "packageName": "com.cosmicode.mypass",
+        "packageFolder": "com/cosmicode/mypass",
         "serverPort": "8080",
         "authenticationType": "jwt",
         "cacheProvider": "ehcache",
@@ -32,7 +32,7 @@
         "enableTranslation": true,
         "nativeLanguage": "en",
         "languages": ["en", "es"],
-        "herokuAppName": "roomie-web",
+        "herokuAppName": "mypass-web",
         "herokuDeployType": "git"
     }
 }
