@@ -1,10 +1,21 @@
 {
     "home": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "MyPass, your password manager",
+        "subtitle": "We remember everything for you!",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
+        "features": {
+            "f1": "Secure",
+            "f1d": "You can generate strong passwords.",
+            "f2": "Share Vaults",
+            "f2d": "Password vaults can be shared with other users.",
+            "f3": "Free to Use",
+            "f4": "Mobile First",
+            "f4d": "We provide the best experience on the go!"
+        },
+        "download": "Discover what all the buzz is about!",
+        "downloaddesc": "Our app is available on any mobile device! Download now to get started!",
         "question": "If you have any question on JHipster:",
         "link": {
             "homepage": "JHipster homepage",
