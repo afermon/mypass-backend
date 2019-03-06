@@ -3,14 +3,14 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "roomie": {
+        "mypass": {
             "root": "",
             "sourceRoot": "src/main/webapp",
             "projectType": "application",
             "architect": {}
         }
     },
-    "defaultProject": "roomie",
+    "defaultProject": "mypass",
     "cli": {
         "packageManager": "npm"
     },

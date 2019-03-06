@@ -17,7 +17,7 @@ logging:
     level:
         ROOT: DEBUG
         io.github.jhipster: DEBUG
-        com.cosmicode.roomie: DEBUG
+        com.cosmicode.mypass: DEBUG
 
 spring:
     profiles:
@@ -37,8 +37,8 @@ spring:
             indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/roomie;DB_CLOSE_DELAY=-1
-        username: roomie
+        url: jdbc:h2:file:./target/h2db/db/mypass;DB_CLOSE_DELAY=-1
+        username: mypass
         password:
         hikari:
             auto-commit: false
@@ -112,7 +112,7 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: hello@dev-roomie-web.herokuapp.com
+        from: hello@dev-mypass-web.herokuapp.com
         base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:

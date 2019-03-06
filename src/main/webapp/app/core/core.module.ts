@@ -17,7 +17,7 @@ import locale from '@angular/common/locales/en';
         DatePipe
     ]
 })
-export class RoomieCoreModule {
+export class MyPassCoreModule {
     constructor() {
         registerLocaleData(locale);
     }
