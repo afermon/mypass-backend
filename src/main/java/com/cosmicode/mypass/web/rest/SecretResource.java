@@ -146,4 +146,16 @@ public class SecretResource {
         return secretService.getCurrentUserSecrets();
     }
 
+    /**
+     * GET  /secrets/user : get all current user secrets.
+     *
+     * @param id the id of the folder to retrieve
+     * @return the ResponseEntity with status 200 (OK) and the list of secrets in body
+     */
+    @GetMapping("/secrets/folder/{id}")
+    @Timed
+    public List<SecretDTO> getFolderSecrets(@PathVariable Long id) {
+        log.debug("REST request to get current user Secrets");
+        return secretService.getFolderSecrets(id);
+    }
 }

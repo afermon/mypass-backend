@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,7 @@ public class SecretService {
         log.debug("Request to save Secret : {}", secretDTO);
 
         Secret secret = secretMapper.toEntity(secretDTO);
+        secret.setModified(Instant.now());
         secret = secretRepository.save(secret);
         SecretDTO result = secretMapper.toDto(secret);
         secretSearchRepository.save(secret);
@@ -112,6 +114,13 @@ public class SecretService {
     public List<SecretDTO> getCurrentUserSecrets(){
         log.debug("Request to get Secrets for current user");
         return secretRepository.findByOwnerIsCurrentUser().stream()
+            .map(secretMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public List<SecretDTO> getFolderSecrets(Long id){
+        log.debug("Request to get Secrets for folder");
+        return secretRepository.findByFolderId(id).stream()
             .map(secretMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }

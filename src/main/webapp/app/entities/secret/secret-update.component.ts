@@ -8,9 +8,9 @@ import { JhiAlertService } from 'ng-jhipster';
 
 import { ISecret } from 'app/shared/model/secret.model';
 import { SecretService } from './secret.service';
-import { IUser, UserService } from 'app/core';
 import { IFolder } from 'app/shared/model/folder.model';
 import { FolderService } from 'app/entities/folder';
+import { IUser, UserService } from 'app/core';
 
 @Component({
     selector: 'jhi-secret-update',
@@ -20,17 +20,16 @@ export class SecretUpdateComponent implements OnInit {
     secret: ISecret;
     isSaving: boolean;
 
-    users: IUser[];
-
     folders: IFolder[];
-    created: string;
+
+    users: IUser[];
     modified: string;
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected secretService: SecretService,
-        protected userService: UserService,
         protected folderService: FolderService,
+        protected userService: UserService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
@@ -38,18 +37,17 @@ export class SecretUpdateComponent implements OnInit {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ secret }) => {
             this.secret = secret;
-            this.created = this.secret.created != null ? this.secret.created.format(DATE_TIME_FORMAT) : null;
             this.modified = this.secret.modified != null ? this.secret.modified.format(DATE_TIME_FORMAT) : null;
         });
-        this.userService.query().subscribe(
-            (res: HttpResponse<IUser[]>) => {
-                this.users = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
         this.folderService.query().subscribe(
             (res: HttpResponse<IFolder[]>) => {
                 this.folders = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.userService.query().subscribe(
+            (res: HttpResponse<IUser[]>) => {
+                this.users = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -61,7 +59,6 @@ export class SecretUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        this.secret.created = this.created != null ? moment(this.created, DATE_TIME_FORMAT) : null;
         this.secret.modified = this.modified != null ? moment(this.modified, DATE_TIME_FORMAT) : null;
         if (this.secret.id !== undefined) {
             this.subscribeToSaveResponse(this.secretService.update(this.secret));
@@ -87,11 +84,11 @@ export class SecretUpdateComponent implements OnInit {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 
-    trackUserById(index: number, item: IUser) {
+    trackFolderById(index: number, item: IFolder) {
         return item.id;
     }
 
-    trackFolderById(index: number, item: IFolder) {
+    trackUserById(index: number, item: IUser) {
         return item.id;
     }
 }

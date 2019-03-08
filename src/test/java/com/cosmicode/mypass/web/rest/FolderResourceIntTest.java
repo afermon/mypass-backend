@@ -62,9 +62,6 @@ public class FolderResourceIntTest {
     private static final String DEFAULT_KEY = "AAAAAAAAAA";
     private static final String UPDATED_KEY = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
     private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -133,7 +130,6 @@ public class FolderResourceIntTest {
             .name(DEFAULT_NAME)
             .icon(DEFAULT_ICON)
             .key(DEFAULT_KEY)
-            .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
         return folder;
     }
@@ -162,7 +158,6 @@ public class FolderResourceIntTest {
         assertThat(testFolder.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testFolder.getIcon()).isEqualTo(DEFAULT_ICON);
         assertThat(testFolder.getKey()).isEqualTo(DEFAULT_KEY);
-        assertThat(testFolder.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testFolder.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
         // Validate the Folder in Elasticsearch
@@ -251,25 +246,6 @@ public class FolderResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = folderRepository.findAll().size();
-        // set the field null
-        folder.setCreated(null);
-
-        // Create the Folder, which fails.
-        FolderDTO folderDTO = folderMapper.toDto(folder);
-
-        restFolderMockMvc.perform(post("/api/folders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(folderDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Folder> folderList = folderRepository.findAll();
-        assertThat(folderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkModifiedIsRequired() throws Exception {
         int databaseSizeBeforeTest = folderRepository.findAll().size();
         // set the field null
@@ -301,7 +277,6 @@ public class FolderResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].icon").value(hasItem(DEFAULT_ICON.toString())))
             .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
     
@@ -352,7 +327,6 @@ public class FolderResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.icon").value(DEFAULT_ICON.toString()))
             .andExpect(jsonPath("$.key").value(DEFAULT_KEY.toString()))
-            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
             .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
     }
 
@@ -380,7 +354,6 @@ public class FolderResourceIntTest {
             .name(UPDATED_NAME)
             .icon(UPDATED_ICON)
             .key(UPDATED_KEY)
-            .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
         FolderDTO folderDTO = folderMapper.toDto(updatedFolder);
 
@@ -396,7 +369,6 @@ public class FolderResourceIntTest {
         assertThat(testFolder.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFolder.getIcon()).isEqualTo(UPDATED_ICON);
         assertThat(testFolder.getKey()).isEqualTo(UPDATED_KEY);
-        assertThat(testFolder.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testFolder.getModified()).isEqualTo(UPDATED_MODIFIED);
 
         // Validate the Folder in Elasticsearch
@@ -461,7 +433,6 @@ public class FolderResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].icon").value(hasItem(DEFAULT_ICON)))
             .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY)))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 

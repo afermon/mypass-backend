@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +53,7 @@ public class FolderService {
         log.debug("Request to save Folder : {}", folderDTO);
 
         Folder folder = folderMapper.toEntity(folderDTO);
+        folder.setModified(Instant.now());
         folder = folderRepository.save(folder);
         FolderDTO result = folderMapper.toDto(folder);
         folderSearchRepository.save(folder);
