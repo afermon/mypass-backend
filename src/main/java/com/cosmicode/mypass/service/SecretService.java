@@ -108,4 +108,11 @@ public class SecretService {
             .map(secretMapper::toDto)
             .collect(Collectors.toList());
     }
+
+    public List<SecretDTO> getCurrentUserSecrets(){
+        log.debug("Request to get Secrets for current user");
+        return secretRepository.findByOwnerIsCurrentUser().stream()
+            .map(secretMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 }

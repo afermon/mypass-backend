@@ -119,4 +119,11 @@ public class FolderService {
             .map(folderMapper::toDto)
             .collect(Collectors.toList());
     }
+
+    public List<FolderDTO> getCurrentUserFolders(){
+        log.debug("Request to get Secrets for current user");
+        return folderRepository.findByOwnerIsCurrentUser().stream()
+            .map(folderMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 }

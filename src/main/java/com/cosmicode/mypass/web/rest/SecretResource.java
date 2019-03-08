@@ -134,4 +134,16 @@ public class SecretResource {
         return secretService.search(query);
     }
 
+    /**
+     * GET  /secrets/user : get all current user secrets.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of secrets in body
+     */
+    @GetMapping("/secrets/user")
+    @Timed
+    public List<SecretDTO> getCurrentUserSecrets() {
+        log.debug("REST request to get current user Secrets");
+        return secretService.getCurrentUserSecrets();
+    }
+
 }

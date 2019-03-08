@@ -135,4 +135,17 @@ public class FolderResource {
         return folderService.search(query);
     }
 
+    /**
+     * GET  /folders/user : get all the user folders.
+     *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
+     * @return the ResponseEntity with status 200 (OK) and the list of folders in body
+     */
+    @GetMapping("/folders/user")
+    @Timed
+    public List<FolderDTO> getCurrentUserFolders(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get all Folders");
+        return folderService.getCurrentUserFolders();
+    }
+
 }
