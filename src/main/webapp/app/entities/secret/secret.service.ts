@@ -59,7 +59,6 @@ export class SecretService {
 
     protected convertDateFromClient(secret: ISecret): ISecret {
         const copy: ISecret = Object.assign({}, secret, {
-            created: secret.created != null && secret.created.isValid() ? secret.created.toJSON() : null,
             modified: secret.modified != null && secret.modified.isValid() ? secret.modified.toJSON() : null
         });
         return copy;
@@ -67,7 +66,6 @@ export class SecretService {
 
     protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
         if (res.body) {
-            res.body.created = res.body.created != null ? moment(res.body.created) : null;
             res.body.modified = res.body.modified != null ? moment(res.body.modified) : null;
         }
         return res;
@@ -76,7 +74,6 @@ export class SecretService {
     protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
         if (res.body) {
             res.body.forEach((secret: ISecret) => {
-                secret.created = secret.created != null ? moment(secret.created) : null;
                 secret.modified = secret.modified != null ? moment(secret.modified) : null;
             });
         }

@@ -34,10 +34,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="created" type="datetime">
-                <constraints nullable="false" />
-            </column>
-
             <column name="modified" type="datetime">
                 <constraints nullable="false" />
             </column>
@@ -48,7 +44,6 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="folder" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="folder" columnName="modified" columnDataType="datetime"/>
         
         <createTable tableName="folder_shared_with">

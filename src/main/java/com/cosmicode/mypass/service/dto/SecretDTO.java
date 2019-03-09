@@ -31,18 +31,15 @@ public class SecretDTO implements Serializable {
     private String notes;
 
     @NotNull
-    private Instant created;
-
-    @NotNull
     private Instant modified;
-
-    private Long ownerId;
-
-    private String ownerLogin;
 
     private Long folderId;
 
     private String folderName;
+
+    private Long ownerId;
+
+    private String ownerLogin;
 
     public Long getId() {
         return id;
@@ -92,36 +89,12 @@ public class SecretDTO implements Serializable {
         this.notes = notes;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
     public Instant getModified() {
         return modified;
     }
 
     public void setModified(Instant modified) {
         this.modified = modified;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long userId) {
-        this.ownerId = userId;
-    }
-
-    public String getOwnerLogin() {
-        return ownerLogin;
-    }
-
-    public void setOwnerLogin(String userLogin) {
-        this.ownerLogin = userLogin;
     }
 
     public Long getFolderId() {
@@ -138,6 +111,22 @@ public class SecretDTO implements Serializable {
 
     public void setFolderName(String folderName) {
         this.folderName = folderName;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long userId) {
+        this.ownerId = userId;
+    }
+
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String userLogin) {
+        this.ownerLogin = userLogin;
     }
 
     @Override
@@ -170,12 +159,11 @@ public class SecretDTO implements Serializable {
             ", username='" + getUsername() + "'" +
             ", password='" + getPassword() + "'" +
             ", notes='" + getNotes() + "'" +
-            ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
-            ", owner=" + getOwnerId() +
-            ", owner='" + getOwnerLogin() + "'" +
             ", folder=" + getFolderId() +
             ", folder='" + getFolderName() + "'" +
+            ", owner=" + getOwnerId() +
+            ", owner='" + getOwnerLogin() + "'" +
             "}";
     }
 }

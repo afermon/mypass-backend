@@ -46,16 +46,9 @@ public class Folder implements Serializable {
     private String key;
 
     @NotNull
-    @Column(name = "created", nullable = false)
-    private Instant created;
-
-    @NotNull
     @Column(name = "modified", nullable = false)
     private Instant modified;
 
-    @OneToMany(mappedBy = "folder")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Secret> secrets = new HashSet<>();
     @ManyToOne
     @JsonIgnoreProperties("")
     private User owner;
@@ -66,6 +59,10 @@ public class Folder implements Serializable {
                joinColumns = @JoinColumn(name = "folders_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "shared_withs_id", referencedColumnName = "id"))
     private Set<User> sharedWiths = new HashSet<>();
+
+    @OneToMany(mappedBy = "folder")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Secret> secrets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -115,19 +112,6 @@ public class Folder implements Serializable {
         this.key = key;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
-
-    public Folder created(Instant created) {
-        this.created = created;
-        return this;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
     public Instant getModified() {
         return modified;
     }
@@ -139,31 +123,6 @@ public class Folder implements Serializable {
 
     public void setModified(Instant modified) {
         this.modified = modified;
-    }
-
-    public Set<Secret> getSecrets() {
-        return secrets;
-    }
-
-    public Folder secrets(Set<Secret> secrets) {
-        this.secrets = secrets;
-        return this;
-    }
-
-    public Folder addSecrets(Secret secret) {
-        this.secrets.add(secret);
-        secret.setFolder(this);
-        return this;
-    }
-
-    public Folder removeSecrets(Secret secret) {
-        this.secrets.remove(secret);
-        secret.setFolder(null);
-        return this;
-    }
-
-    public void setSecrets(Set<Secret> secrets) {
-        this.secrets = secrets;
     }
 
     public User getOwner() {
@@ -201,6 +160,31 @@ public class Folder implements Serializable {
     public void setSharedWiths(Set<User> users) {
         this.sharedWiths = users;
     }
+
+    public Set<Secret> getSecrets() {
+        return secrets;
+    }
+
+    public Folder secrets(Set<Secret> secrets) {
+        this.secrets = secrets;
+        return this;
+    }
+
+    public Folder addSecrets(Secret secret) {
+        this.secrets.add(secret);
+        secret.setFolder(this);
+        return this;
+    }
+
+    public Folder removeSecrets(Secret secret) {
+        this.secrets.remove(secret);
+        secret.setFolder(null);
+        return this;
+    }
+
+    public void setSecrets(Set<Secret> secrets) {
+        this.secrets = secrets;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -230,7 +214,6 @@ public class Folder implements Serializable {
             ", name='" + getName() + "'" +
             ", icon='" + getIcon() + "'" +
             ", key='" + getKey() + "'" +
-            ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
             "}";
     }

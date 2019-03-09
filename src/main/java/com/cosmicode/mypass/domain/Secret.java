@@ -51,20 +51,16 @@ public class Secret implements Serializable {
     private String notes;
 
     @NotNull
-    @Column(name = "created", nullable = false)
-    private Instant created;
-
-    @NotNull
     @Column(name = "modified", nullable = false)
     private Instant modified;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
-    private User owner;
-
-    @ManyToOne
     @JsonIgnoreProperties("secrets")
     private Folder folder;
+
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -140,19 +136,6 @@ public class Secret implements Serializable {
         this.notes = notes;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
-
-    public Secret created(Instant created) {
-        this.created = created;
-        return this;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
     public Instant getModified() {
         return modified;
     }
@@ -166,19 +149,6 @@ public class Secret implements Serializable {
         this.modified = modified;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public Secret owner(User user) {
-        this.owner = user;
-        return this;
-    }
-
-    public void setOwner(User user) {
-        this.owner = user;
-    }
-
     public Folder getFolder() {
         return folder;
     }
@@ -190,6 +160,19 @@ public class Secret implements Serializable {
 
     public void setFolder(Folder folder) {
         this.folder = folder;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Secret owner(User user) {
+        this.owner = user;
+        return this;
+    }
+
+    public void setOwner(User user) {
+        this.owner = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -222,7 +205,6 @@ public class Secret implements Serializable {
             ", username='" + getUsername() + "'" +
             ", password='" + getPassword() + "'" +
             ", notes='" + getNotes() + "'" +
-            ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
             "}";
     }

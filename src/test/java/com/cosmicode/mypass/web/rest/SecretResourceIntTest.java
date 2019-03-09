@@ -64,9 +64,6 @@ public class SecretResourceIntTest {
     private static final String DEFAULT_NOTES = "AAAAAAAAAA";
     private static final String UPDATED_NOTES = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
     private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -131,7 +128,6 @@ public class SecretResourceIntTest {
             .username(DEFAULT_USERNAME)
             .password(DEFAULT_PASSWORD)
             .notes(DEFAULT_NOTES)
-            .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
         return secret;
     }
@@ -162,7 +158,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(DEFAULT_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(DEFAULT_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testSecret.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testSecret.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
         // Validate the Secret in Elasticsearch
@@ -251,25 +246,6 @@ public class SecretResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = secretRepository.findAll().size();
-        // set the field null
-        secret.setCreated(null);
-
-        // Create the Secret, which fails.
-        SecretDTO secretDTO = secretMapper.toDto(secret);
-
-        restSecretMockMvc.perform(post("/api/secrets")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(secretDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Secret> secretList = secretRepository.findAll();
-        assertThat(secretList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkModifiedIsRequired() throws Exception {
         int databaseSizeBeforeTest = secretRepository.findAll().size();
         // set the field null
@@ -303,7 +279,6 @@ public class SecretResourceIntTest {
             .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME.toString())))
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD.toString())))
             .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
     
@@ -323,7 +298,6 @@ public class SecretResourceIntTest {
             .andExpect(jsonPath("$.username").value(DEFAULT_USERNAME.toString()))
             .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD.toString()))
             .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()))
-            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
             .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
     }
 
@@ -353,7 +327,6 @@ public class SecretResourceIntTest {
             .username(UPDATED_USERNAME)
             .password(UPDATED_PASSWORD)
             .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
         SecretDTO secretDTO = secretMapper.toDto(updatedSecret);
 
@@ -371,7 +344,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(UPDATED_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(UPDATED_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testSecret.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testSecret.getModified()).isEqualTo(UPDATED_MODIFIED);
 
         // Validate the Secret in Elasticsearch
@@ -438,7 +410,6 @@ public class SecretResourceIntTest {
             .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME)))
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
             .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 

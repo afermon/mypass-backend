@@ -19,11 +19,10 @@
             "name": "Name",
             "icon": "Icon",
             "key": "Key",
-            "created": "Created",
             "modified": "Modified",
-            "secrets": "Secrets",
             "owner": "Owner",
-            "sharedWith": "Shared With"
+            "sharedWith": "Shared With",
+            "secrets": "Secrets"
         }
     }
 }

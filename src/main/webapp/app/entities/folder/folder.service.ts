@@ -59,7 +59,6 @@ export class FolderService {
 
     protected convertDateFromClient(folder: IFolder): IFolder {
         const copy: IFolder = Object.assign({}, folder, {
-            created: folder.created != null && folder.created.isValid() ? folder.created.toJSON() : null,
             modified: folder.modified != null && folder.modified.isValid() ? folder.modified.toJSON() : null
         });
         return copy;
@@ -67,7 +66,6 @@ export class FolderService {
 
     protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
         if (res.body) {
-            res.body.created = res.body.created != null ? moment(res.body.created) : null;
             res.body.modified = res.body.modified != null ? moment(res.body.modified) : null;
         }
         return res;
@@ -76,7 +74,6 @@ export class FolderService {
     protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
         if (res.body) {
             res.body.forEach((folder: IFolder) => {
-                folder.created = folder.created != null ? moment(folder.created) : null;
                 folder.modified = folder.modified != null ? moment(folder.modified) : null;
             });
         }

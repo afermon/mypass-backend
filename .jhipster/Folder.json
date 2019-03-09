@@ -36,13 +36,6 @@
             "fieldValidateRulesMaxlength": 250
         },
         {
-            "fieldName": "created",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "modified",
             "fieldType": "Instant",
             "fieldValidateRules": [
@@ -51,12 +44,6 @@
         }
     ],
     "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "secrets",
-            "otherEntityName": "secret",
-            "otherEntityRelationshipName": "folder"
-        },
         {
             "relationshipType": "many-to-one",
             "relationshipName": "owner",
@@ -70,6 +57,12 @@
             "otherEntityName": "user",
             "otherEntityField": "login",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "secrets",
+            "otherEntityName": "secret",
+            "otherEntityRelationshipName": "folder"
         }
     ],
     "changelogDate": "20190303021703",

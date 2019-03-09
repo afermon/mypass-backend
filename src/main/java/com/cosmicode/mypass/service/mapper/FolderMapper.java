@@ -15,8 +15,8 @@ public interface FolderMapper extends EntityMapper<FolderDTO, Folder> {
     @Mapping(source = "owner.login", target = "ownerLogin")
     FolderDTO toDto(Folder folder);
 
-    @Mapping(target = "secrets", ignore = true)
     @Mapping(source = "ownerId", target = "owner")
+    @Mapping(target = "secrets")
     Folder toEntity(FolderDTO folderDTO);
 
     default Folder fromId(Long id) {

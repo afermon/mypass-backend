@@ -19,7 +19,6 @@ export class FolderUpdateComponent implements OnInit {
     isSaving: boolean;
 
     users: IUser[];
-    created: string;
     modified: string;
 
     constructor(
@@ -33,7 +32,6 @@ export class FolderUpdateComponent implements OnInit {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ folder }) => {
             this.folder = folder;
-            this.created = this.folder.created != null ? this.folder.created.format(DATE_TIME_FORMAT) : null;
             this.modified = this.folder.modified != null ? this.folder.modified.format(DATE_TIME_FORMAT) : null;
         });
         this.userService.query().subscribe(
@@ -50,7 +48,6 @@ export class FolderUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        this.folder.created = this.created != null ? moment(this.created, DATE_TIME_FORMAT) : null;
         this.folder.modified = this.modified != null ? moment(this.modified, DATE_TIME_FORMAT) : null;
         if (this.folder.id !== undefined) {
             this.subscribeToSaveResponse(this.folderService.update(this.folder));
