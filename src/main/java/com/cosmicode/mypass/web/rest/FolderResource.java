@@ -2,6 +2,7 @@ package com.cosmicode.mypass.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.mypass.service.FolderService;
+import com.cosmicode.mypass.service.SecretService;
 import com.cosmicode.mypass.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.mypass.web.rest.util.HeaderUtil;
 import com.cosmicode.mypass.service.dto.FolderDTO;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -34,8 +36,11 @@ public class FolderResource {
 
     private final FolderService folderService;
 
-    public FolderResource(FolderService folderService) {
+    private final SecretService secretService;
+
+    public FolderResource(FolderService folderService, SecretService secretService) {
         this.folderService = folderService;
+        this.secretService = secretService;
     }
 
     /**
@@ -145,7 +150,13 @@ public class FolderResource {
     @Timed
     public List<FolderDTO> getCurrentUserFolders(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Folders");
-        return folderService.getCurrentUserFolders();
+        List<FolderDTO>  folders = folderService.getCurrentUserFolders();
+        if (eagerload){
+            for (FolderDTO folder: folders) {
+                folder.setSecrets(new HashSet<>(secretService.getFolderSecrets(folder.getId())));
+            }
+        }
+        return folders;
     }
 
 }
