@@ -6,6 +6,7 @@ import com.cosmicode.mypass.domain.Folder;
 import com.cosmicode.mypass.repository.FolderRepository;
 import com.cosmicode.mypass.repository.search.FolderSearchRepository;
 import com.cosmicode.mypass.service.FolderService;
+import com.cosmicode.mypass.service.SecretService;
 import com.cosmicode.mypass.service.dto.FolderDTO;
 import com.cosmicode.mypass.service.mapper.FolderMapper;
 import com.cosmicode.mypass.web.rest.errors.ExceptionTranslator;
@@ -80,6 +81,12 @@ public class FolderResourceIntTest {
     @Autowired
     private FolderService folderService;
 
+    @Autowired
+    private SecretService secretService;
+
+    @Autowired
+    private SecretService secretServiceMock;
+
     /**
      * This repository is mocked in the com.cosmicode.mypass.repository.search test package.
      *
@@ -110,7 +117,7 @@ public class FolderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FolderResource folderResource = new FolderResource(folderService);
+        final FolderResource folderResource = new FolderResource(folderService, secretService);
         this.restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -158,7 +165,6 @@ public class FolderResourceIntTest {
         assertThat(testFolder.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testFolder.getIcon()).isEqualTo(DEFAULT_ICON);
         assertThat(testFolder.getKey()).isEqualTo(DEFAULT_KEY);
-        assertThat(testFolder.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
         // Validate the Folder in Elasticsearch
         verify(mockFolderSearchRepository, times(1)).save(testFolder);
@@ -282,7 +288,7 @@ public class FolderResourceIntTest {
     
     @SuppressWarnings({"unchecked"})
     public void getAllFoldersWithEagerRelationshipsIsEnabled() throws Exception {
-        FolderResource folderResource = new FolderResource(folderServiceMock);
+        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock);
         when(folderServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         MockMvc restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
@@ -299,7 +305,7 @@ public class FolderResourceIntTest {
 
     @SuppressWarnings({"unchecked"})
     public void getAllFoldersWithEagerRelationshipsIsNotEnabled() throws Exception {
-        FolderResource folderResource = new FolderResource(folderServiceMock);
+        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock);
             when(folderServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
             MockMvc restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -369,7 +375,6 @@ public class FolderResourceIntTest {
         assertThat(testFolder.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFolder.getIcon()).isEqualTo(UPDATED_ICON);
         assertThat(testFolder.getKey()).isEqualTo(UPDATED_KEY);
-        assertThat(testFolder.getModified()).isEqualTo(UPDATED_MODIFIED);
 
         // Validate the Folder in Elasticsearch
         verify(mockFolderSearchRepository, times(1)).save(testFolder);

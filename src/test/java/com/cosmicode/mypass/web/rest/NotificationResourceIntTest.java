@@ -147,7 +147,6 @@ public class NotificationResourceIntTest {
         Notification testNotification = notificationList.get(notificationList.size() - 1);
         assertThat(testNotification.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testNotification.getContent()).isEqualTo(DEFAULT_CONTENT);
-        assertThat(testNotification.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testNotification.isRead()).isEqualTo(DEFAULT_READ);
 
         // Validate the Notification in Elasticsearch
@@ -325,7 +324,6 @@ public class NotificationResourceIntTest {
         Notification testNotification = notificationList.get(notificationList.size() - 1);
         assertThat(testNotification.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testNotification.getContent()).isEqualTo(UPDATED_CONTENT);
-        assertThat(testNotification.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testNotification.isRead()).isEqualTo(UPDATED_READ);
 
         // Validate the Notification in Elasticsearch
