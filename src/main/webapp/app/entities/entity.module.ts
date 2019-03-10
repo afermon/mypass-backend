@@ -3,10 +3,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MyPassSecretModule } from './secret/secret.module';
 import { MyPassFolderModule } from './folder/folder.module';
 import { MyPassNotificationModule } from './notification/notification.module';
-import { MyPassSecretModule } from './secret/secret.module';
-import { MyPassFolderModule } from './folder/folder.module';
-import { MyPassSecretModule } from './secret/secret.module';
-import { MyPassFolderModule } from './folder/folder.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({

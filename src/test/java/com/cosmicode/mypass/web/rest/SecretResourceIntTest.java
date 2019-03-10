@@ -158,7 +158,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(DEFAULT_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(DEFAULT_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testSecret.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
         // Validate the Secret in Elasticsearch
         verify(mockSecretSearchRepository, times(1)).save(testSecret);
@@ -344,7 +343,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(UPDATED_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(UPDATED_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testSecret.getModified()).isEqualTo(UPDATED_MODIFIED);
 
         // Validate the Secret in Elasticsearch
         verify(mockSecretSearchRepository, times(1)).save(testSecret);
