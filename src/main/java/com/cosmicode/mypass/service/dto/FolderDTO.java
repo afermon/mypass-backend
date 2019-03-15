@@ -19,10 +19,6 @@ public class FolderDTO implements Serializable {
     private String name;
 
     @NotNull
-    @Size(min = 1, max = 20)
-    private String icon;
-
-    @NotNull
     @Size(min = 10, max = 250)
     private String key;
 
@@ -51,14 +47,6 @@ public class FolderDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 
     public String getKey() {
@@ -135,7 +123,6 @@ public class FolderDTO implements Serializable {
         return "FolderDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", icon='" + getIcon() + "'" +
             ", key='" + getKey() + "'" +
             ", modified='" + getModified() + "'" +
             ", owner=" + getOwnerId() +

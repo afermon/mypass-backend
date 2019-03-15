@@ -1,38 +1,41 @@
 {
-    "generator-jhipster": {
-        "promptValues": {
-            "packageName": "com.cosmicode.mypass",
-            "nativeLanguage": "en"
-        },
-        "jhipsterVersion": "5.7.2",
-        "applicationType": "monolith",
-        "baseName": "mypass",
-        "packageName": "com.cosmicode.mypass",
-        "packageFolder": "com/cosmicode/mypass",
-        "serverPort": "8080",
-        "authenticationType": "jwt",
-        "cacheProvider": "ehcache",
-        "enableHibernateCache": true,
-        "websocket": false,
-        "databaseType": "sql",
-        "devDatabaseType": "h2Disk",
-        "prodDatabaseType": "mysql",
-        "searchEngine": "elasticsearch",
-        "messageBroker": false,
-        "serviceDiscoveryType": false,
-        "buildTool": "maven",
-        "enableSwaggerCodegen": false,
-        "jwtSecretKey": "NmI4NjA4NzEzM2Y4MGRmZjJhYTJhMDAwMGQ1MGRiNmVmZWQ3NzJmOTIyNTdiMDczNjVlNGViZjFiZDY4ZjE2ZjFjN2JmOGNmNGQwNDg5OTMzYzIzNDU0NGRhZDc1ZmFmNjNiODQxNDhiZWE1NDZiMjVkNmU3ZDQ0NzBkYzBlNjg=",
-        "clientFramework": "angularX",
-        "useSass": true,
-        "clientPackageManager": "npm",
-        "testFrameworks": [],
-        "jhiPrefix": "jhi",
-        "otherModules": [],
-        "enableTranslation": true,
-        "nativeLanguage": "en",
-        "languages": ["en", "es"],
-        "herokuAppName": "mypass-web",
-        "herokuDeployType": "git"
-    }
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.cosmicode.mypass",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "5.7.2",
+    "applicationType": "monolith",
+    "baseName": "mypass",
+    "packageName": "com.cosmicode.mypass",
+    "packageFolder": "com/cosmicode/mypass",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "false",
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NmI4NjA4NzEzM2Y4MGRmZjJhYTJhMDAwMGQ1MGRiNmVmZWQ3NzJmOTIyNTdiMDczNjVlNGViZjFiZDY4ZjE2ZjFjN2JmOGNmNGQwNDg5OTMzYzIzNDU0NGRhZDc1ZmFmNjNiODQxNDhiZWE1NDZiMjVkNmU3ZDQ0NzBkYzBlNjg=",
+    "clientFramework": "angularX",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en",
+      "es"
+    ],
+    "herokuAppName": "mypass-web",
+    "herokuDeployType": "git"
+  }
 }

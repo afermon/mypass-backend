@@ -2,7 +2,6 @@ package com.cosmicode.mypass.service;
 
 import com.cosmicode.mypass.domain.Secret;
 import com.cosmicode.mypass.repository.SecretRepository;
-import com.cosmicode.mypass.repository.search.SecretSearchRepository;
 import com.cosmicode.mypass.service.dto.SecretDTO;
 import com.cosmicode.mypass.service.mapper.SecretMapper;
 import org.slf4j.Logger;
@@ -16,9 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Secret.
@@ -33,12 +29,9 @@ public class SecretService {
 
     private final SecretMapper secretMapper;
 
-    private final SecretSearchRepository secretSearchRepository;
-
-    public SecretService(SecretRepository secretRepository, SecretMapper secretMapper, SecretSearchRepository secretSearchRepository) {
+    public SecretService(SecretRepository secretRepository, SecretMapper secretMapper) {
         this.secretRepository = secretRepository;
         this.secretMapper = secretMapper;
-        this.secretSearchRepository = secretSearchRepository;
     }
 
     /**
@@ -53,9 +46,7 @@ public class SecretService {
         Secret secret = secretMapper.toEntity(secretDTO);
         secret.setModified(Instant.now());
         secret = secretRepository.save(secret);
-        SecretDTO result = secretMapper.toDto(secret);
-        secretSearchRepository.save(secret);
-        return result;
+        return secretMapper.toDto(secret);
     }
 
     /**
@@ -93,22 +84,6 @@ public class SecretService {
     public void delete(Long id) {
         log.debug("Request to delete Secret : {}", id);
         secretRepository.deleteById(id);
-        secretSearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the secret corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<SecretDTO> search(String query) {
-        log.debug("Request to search Secrets for query {}", query);
-        return StreamSupport
-            .stream(secretSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(secretMapper::toDto)
-            .collect(Collectors.toList());
     }
 
     public List<SecretDTO> getCurrentUserSecrets(){

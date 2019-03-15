@@ -25,7 +25,7 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new Folder(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate);
+            elemDefault = new Folder(0, 'AAAAAAA', 'AAAAAAA', currentDate);
         });
 
         describe('Service methods', async () => {
@@ -71,7 +71,6 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         name: 'BBBBBB',
-                        icon: 'BBBBBB',
                         key: 'BBBBBB',
                         modified: currentDate.format(DATE_TIME_FORMAT)
                     },
@@ -96,7 +95,6 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         name: 'BBBBBB',
-                        icon: 'BBBBBB',
                         key: 'BBBBBB',
                         modified: currentDate.format(DATE_TIME_FORMAT)
                     },

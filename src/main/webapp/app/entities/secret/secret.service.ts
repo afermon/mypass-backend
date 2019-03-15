@@ -15,7 +15,6 @@ type EntityArrayResponseType = HttpResponse<ISecret[]>;
 @Injectable({ providedIn: 'root' })
 export class SecretService {
     public resourceUrl = SERVER_API_URL + 'api/secrets';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/secrets';
 
     constructor(protected http: HttpClient) {}
 
@@ -48,13 +47,6 @@ export class SecretService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
-    }
-
-    search(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http
-            .get<ISecret[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     protected convertDateFromClient(secret: ISecret): ISecret {

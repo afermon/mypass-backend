@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-    @Query("select distinct folder from Folder folder left join fetch folder.secrets where folder.owner.login = ?#{principal.username}")
+    @Query("select folder from Folder folder where folder.owner.login = ?#{principal.username}")
     List<Folder> findByOwnerIsCurrentUser();
 
     @Query(value = "select distinct folder from Folder folder left join fetch folder.sharedWiths",

@@ -19,9 +19,6 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Folder.
@@ -124,20 +121,6 @@ public class FolderResource {
         log.debug("REST request to delete Folder : {}", id);
         folderService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/folders?query=:query : search for the folder corresponding
-     * to the query.
-     *
-     * @param query the query of the folder search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/folders")
-    @Timed
-    public List<FolderDTO> searchFolders(@RequestParam String query) {
-        log.debug("REST request to search Folders for query {}", query);
-        return folderService.search(query);
     }
 
     /**
