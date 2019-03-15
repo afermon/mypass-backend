@@ -4,7 +4,6 @@ import com.cosmicode.mypass.MyPassApp;
 
 import com.cosmicode.mypass.domain.Folder;
 import com.cosmicode.mypass.repository.FolderRepository;
-import com.cosmicode.mypass.repository.search.FolderSearchRepository;
 import com.cosmicode.mypass.service.FolderService;
 import com.cosmicode.mypass.service.SecretService;
 import com.cosmicode.mypass.service.dto.FolderDTO;
@@ -33,13 +32,11 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
 import static com.cosmicode.mypass.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -56,9 +53,6 @@ public class FolderResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_ICON = "AAAAAAAAAA";
-    private static final String UPDATED_ICON = "BBBBBBBBBB";
 
     private static final String DEFAULT_KEY = "AAAAAAAAAA";
     private static final String UPDATED_KEY = "BBBBBBBBBB";
@@ -86,14 +80,6 @@ public class FolderResourceIntTest {
 
     @Autowired
     private SecretService secretServiceMock;
-
-    /**
-     * This repository is mocked in the com.cosmicode.mypass.repository.search test package.
-     *
-     * @see com.cosmicode.mypass.repository.search.FolderSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private FolderSearchRepository mockFolderSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -135,7 +121,6 @@ public class FolderResourceIntTest {
     public static Folder createEntity(EntityManager em) {
         Folder folder = new Folder()
             .name(DEFAULT_NAME)
-            .icon(DEFAULT_ICON)
             .key(DEFAULT_KEY)
             .modified(DEFAULT_MODIFIED);
         return folder;
@@ -163,11 +148,7 @@ public class FolderResourceIntTest {
         assertThat(folderList).hasSize(databaseSizeBeforeCreate + 1);
         Folder testFolder = folderList.get(folderList.size() - 1);
         assertThat(testFolder.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testFolder.getIcon()).isEqualTo(DEFAULT_ICON);
         assertThat(testFolder.getKey()).isEqualTo(DEFAULT_KEY);
-
-        // Validate the Folder in Elasticsearch
-        verify(mockFolderSearchRepository, times(1)).save(testFolder);
     }
 
     @Test
@@ -188,9 +169,6 @@ public class FolderResourceIntTest {
         // Validate the Folder in the database
         List<Folder> folderList = folderRepository.findAll();
         assertThat(folderList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Folder in Elasticsearch
-        verify(mockFolderSearchRepository, times(0)).save(folder);
     }
 
     @Test
@@ -199,25 +177,6 @@ public class FolderResourceIntTest {
         int databaseSizeBeforeTest = folderRepository.findAll().size();
         // set the field null
         folder.setName(null);
-
-        // Create the Folder, which fails.
-        FolderDTO folderDTO = folderMapper.toDto(folder);
-
-        restFolderMockMvc.perform(post("/api/folders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(folderDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Folder> folderList = folderRepository.findAll();
-        assertThat(folderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkIconIsRequired() throws Exception {
-        int databaseSizeBeforeTest = folderRepository.findAll().size();
-        // set the field null
-        folder.setIcon(null);
 
         // Create the Folder, which fails.
         FolderDTO folderDTO = folderMapper.toDto(folder);
@@ -281,7 +240,6 @@ public class FolderResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(folder.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].icon").value(hasItem(DEFAULT_ICON.toString())))
             .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
@@ -331,7 +289,6 @@ public class FolderResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(folder.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.icon").value(DEFAULT_ICON.toString()))
             .andExpect(jsonPath("$.key").value(DEFAULT_KEY.toString()))
             .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
     }
@@ -358,7 +315,6 @@ public class FolderResourceIntTest {
         em.detach(updatedFolder);
         updatedFolder
             .name(UPDATED_NAME)
-            .icon(UPDATED_ICON)
             .key(UPDATED_KEY)
             .modified(UPDATED_MODIFIED);
         FolderDTO folderDTO = folderMapper.toDto(updatedFolder);
@@ -373,11 +329,7 @@ public class FolderResourceIntTest {
         assertThat(folderList).hasSize(databaseSizeBeforeUpdate);
         Folder testFolder = folderList.get(folderList.size() - 1);
         assertThat(testFolder.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testFolder.getIcon()).isEqualTo(UPDATED_ICON);
         assertThat(testFolder.getKey()).isEqualTo(UPDATED_KEY);
-
-        // Validate the Folder in Elasticsearch
-        verify(mockFolderSearchRepository, times(1)).save(testFolder);
     }
 
     @Test
@@ -397,9 +349,6 @@ public class FolderResourceIntTest {
         // Validate the Folder in the database
         List<Folder> folderList = folderRepository.findAll();
         assertThat(folderList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Folder in Elasticsearch
-        verify(mockFolderSearchRepository, times(0)).save(folder);
     }
 
     @Test
@@ -418,27 +367,6 @@ public class FolderResourceIntTest {
         // Validate the database is empty
         List<Folder> folderList = folderRepository.findAll();
         assertThat(folderList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Folder in Elasticsearch
-        verify(mockFolderSearchRepository, times(1)).deleteById(folder.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchFolder() throws Exception {
-        // Initialize the database
-        folderRepository.saveAndFlush(folder);
-        when(mockFolderSearchRepository.search(queryStringQuery("id:" + folder.getId())))
-            .thenReturn(Collections.singletonList(folder));
-        // Search the folder
-        restFolderMockMvc.perform(get("/api/_search/folders?query=id:" + folder.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(folder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].icon").value(hasItem(DEFAULT_ICON)))
-            .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY)))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

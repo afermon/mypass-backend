@@ -14,17 +14,6 @@
             "fieldValidateRulesMaxlength": 250
         },
         {
-            "fieldName": "icon",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required",
-                "minlength",
-                "maxlength"
-            ],
-            "fieldValidateRulesMinlength": 1,
-            "fieldValidateRulesMaxlength": 20
-        },
-        {
             "fieldName": "key",
             "fieldType": "String",
             "fieldValidateRules": [

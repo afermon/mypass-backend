@@ -4,7 +4,6 @@ import com.cosmicode.mypass.MyPassApp;
 
 import com.cosmicode.mypass.domain.Secret;
 import com.cosmicode.mypass.repository.SecretRepository;
-import com.cosmicode.mypass.repository.search.SecretSearchRepository;
 import com.cosmicode.mypass.service.SecretService;
 import com.cosmicode.mypass.service.dto.SecretDTO;
 import com.cosmicode.mypass.service.mapper.SecretMapper;
@@ -28,15 +27,12 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
 
 
 import static com.cosmicode.mypass.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -75,14 +71,6 @@ public class SecretResourceIntTest {
 
     @Autowired
     private SecretService secretService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.mypass.repository.search test package.
-     *
-     * @see com.cosmicode.mypass.repository.search.SecretSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private SecretSearchRepository mockSecretSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -158,9 +146,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(DEFAULT_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(DEFAULT_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(DEFAULT_NOTES);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(1)).save(testSecret);
     }
 
     @Test
@@ -181,9 +166,6 @@ public class SecretResourceIntTest {
         // Validate the Secret in the database
         List<Secret> secretList = secretRepository.findAll();
         assertThat(secretList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(0)).save(secret);
     }
 
     @Test
@@ -343,9 +325,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(UPDATED_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(UPDATED_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(UPDATED_NOTES);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(1)).save(testSecret);
     }
 
     @Test
@@ -365,9 +344,6 @@ public class SecretResourceIntTest {
         // Validate the Secret in the database
         List<Secret> secretList = secretRepository.findAll();
         assertThat(secretList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(0)).save(secret);
     }
 
     @Test
@@ -386,29 +362,6 @@ public class SecretResourceIntTest {
         // Validate the database is empty
         List<Secret> secretList = secretRepository.findAll();
         assertThat(secretList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(1)).deleteById(secret.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchSecret() throws Exception {
-        // Initialize the database
-        secretRepository.saveAndFlush(secret);
-        when(mockSecretSearchRepository.search(queryStringQuery("id:" + secret.getId())))
-            .thenReturn(Collections.singletonList(secret));
-        // Search the secret
-        restSecretMockMvc.perform(get("/api/_search/secrets?query=id:" + secret.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(secret.getId().intValue())))
-            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME)))
-            .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

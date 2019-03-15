@@ -2,7 +2,6 @@ package com.cosmicode.mypass.service;
 
 import com.cosmicode.mypass.domain.Folder;
 import com.cosmicode.mypass.repository.FolderRepository;
-import com.cosmicode.mypass.repository.search.FolderSearchRepository;
 import com.cosmicode.mypass.service.dto.FolderDTO;
 import com.cosmicode.mypass.service.mapper.FolderMapper;
 import org.slf4j.Logger;
@@ -18,9 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Folder.
@@ -35,12 +31,9 @@ public class FolderService {
 
     private final FolderMapper folderMapper;
 
-    private final FolderSearchRepository folderSearchRepository;
-
-    public FolderService(FolderRepository folderRepository, FolderMapper folderMapper, FolderSearchRepository folderSearchRepository) {
+    public FolderService(FolderRepository folderRepository, FolderMapper folderMapper) {
         this.folderRepository = folderRepository;
         this.folderMapper = folderMapper;
-        this.folderSearchRepository = folderSearchRepository;
     }
 
     /**
@@ -55,9 +48,7 @@ public class FolderService {
         Folder folder = folderMapper.toEntity(folderDTO);
         folder.setModified(Instant.now());
         folder = folderRepository.save(folder);
-        FolderDTO result = folderMapper.toDto(folder);
-        folderSearchRepository.save(folder);
-        return result;
+        return folderMapper.toDto(folder);
     }
 
     /**
@@ -104,22 +95,6 @@ public class FolderService {
     public void delete(Long id) {
         log.debug("Request to delete Folder : {}", id);
         folderRepository.deleteById(id);
-        folderSearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the folder corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<FolderDTO> search(String query) {
-        log.debug("Request to search Folders for query {}", query);
-        return StreamSupport
-            .stream(folderSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(folderMapper::toDto)
-            .collect(Collectors.toList());
     }
 
     public List<FolderDTO> getCurrentUserFolders(){

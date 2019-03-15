@@ -9,16 +9,8 @@ entity Secret {
 
 entity Folder {
 	name String unique required minlength(1) maxlength(250),
-	icon String required minlength(1) maxlength(20)
     key String required minlength(10) maxlength(250),
     modified Instant required
-}
-
-entity Notification {
-	title String required minlength(1) maxlength(250),
-    content String required minlength(1) maxlength(250),
-    created Instant required,
-    read Boolean required
 }
 
 relationship ManyToOne {
@@ -27,8 +19,7 @@ relationship ManyToOne {
 
 relationship ManyToOne{
 	Folder{owner(login)} to User,
-	Secret{owner(login)} to User,
-	Notification{user(login)} to User
+	Secret{owner(login)} to User
 }
 
 relationship ManyToMany{

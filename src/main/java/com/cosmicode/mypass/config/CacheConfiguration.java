@@ -38,11 +38,10 @@ public class CacheConfiguration {
             cm.createCache(com.cosmicode.mypass.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.mypass.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.mypass.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(com.cosmicode.mypass.domain.Secret.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.mypass.domain.Folder.class.getName(), jcacheConfiguration);
-            cm.createCache(com.cosmicode.mypass.domain.Folder.class.getName() + ".secrets", jcacheConfiguration);
-            cm.createCache(com.cosmicode.mypass.domain.Notification.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.mypass.domain.Folder.class.getName() + ".sharedWiths", jcacheConfiguration);
+            cm.createCache(com.cosmicode.mypass.domain.Folder.class.getName() + ".secrets", jcacheConfiguration);
+            cm.createCache(com.cosmicode.mypass.domain.Secret.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

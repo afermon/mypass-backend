@@ -15,7 +15,6 @@ type EntityArrayResponseType = HttpResponse<IFolder[]>;
 @Injectable({ providedIn: 'root' })
 export class FolderService {
     public resourceUrl = SERVER_API_URL + 'api/folders';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/folders';
 
     constructor(protected http: HttpClient) {}
 
@@ -48,13 +47,6 @@ export class FolderService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
-    }
-
-    search(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http
-            .get<IFolder[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     protected convertDateFromClient(folder: IFolder): IFolder {

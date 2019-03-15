@@ -8,7 +8,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -21,7 +20,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "folder")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "folder")
 public class Folder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,11 +32,6 @@ public class Folder implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "name", length = 250, nullable = false, unique = true)
     private String name;
-
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "icon", length = 20, nullable = false)
-    private String icon;
 
     @NotNull
     @Size(min = 10, max = 250)
@@ -63,7 +56,6 @@ public class Folder implements Serializable {
     @OneToMany(mappedBy = "folder")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Secret> secrets = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -84,19 +76,6 @@ public class Folder implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public Folder icon(String icon) {
-        this.icon = icon;
-        return this;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 
     public String getKey() {
@@ -212,7 +191,6 @@ public class Folder implements Serializable {
         return "Folder{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", icon='" + getIcon() + "'" +
             ", key='" + getKey() + "'" +
             ", modified='" + getModified() + "'" +
             "}";

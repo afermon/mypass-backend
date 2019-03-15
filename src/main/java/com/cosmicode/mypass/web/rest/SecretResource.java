@@ -17,9 +17,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Secret.
@@ -118,20 +115,6 @@ public class SecretResource {
         log.debug("REST request to delete Secret : {}", id);
         secretService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/secrets?query=:query : search for the secret corresponding
-     * to the query.
-     *
-     * @param query the query of the secret search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/secrets")
-    @Timed
-    public List<SecretDTO> searchSecrets(@RequestParam String query) {
-        log.debug("REST request to search Secrets for query {}", query);
-        return secretService.search(query);
     }
 
     /**
