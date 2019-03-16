@@ -6,7 +6,7 @@
     },
     "jhipsterVersion": "5.7.2",
     "applicationType": "monolith",
-    "baseName": "mypass",
+    "baseName": "MyPass",
     "packageName": "com.cosmicode.mypass",
     "packageFolder": "com/cosmicode/mypass",
     "serverPort": "8080",

@@ -1,7 +1,7 @@
 {
-    "name": "mypass",
-    "version": "0.0.0",
-    "description": "Description for mypass",
+    "name": "my-pass",
+    "version": "2.0.1",
+    "description": "MyPass",
     "private": true,
     "license": "UNLICENSED",
     "cacheDirectories": [

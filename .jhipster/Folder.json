@@ -54,7 +54,7 @@
             "otherEntityRelationshipName": "folder"
         }
     ],
-    "changelogDate": "20190303021703",
+    "changelogDate": "20190316031222",
     "entityTableName": "folder",
     "dto": "mapstruct",
     "pagination": "no",

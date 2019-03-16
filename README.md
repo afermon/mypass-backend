@@ -1,4 +1,4 @@
-# mypass
+# MyPass
 
 This application was generated using JHipster 5.7.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.7.2](https://www.jhipster.tech/documentation-archive/v5.7.2).
 
@@ -37,9 +37,9 @@ Service workers are commented by default, to enable them please uncomment the fo
 ```html
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js').then(function() {
-            console.log('Service Worker Registered');
-        });
+        navigator.serviceWorker
+        .register('./service-worker.js')
+        .then(function() { console.log('Service Worker Registered'); });
     }
 </script>
 ```
@@ -89,7 +89,7 @@ will generate few files:
 
 ## Building for production
 
-To optimize the mypass application for production, run:
+To optimize the MyPass application for production, run:
 
     ./mvnw -Pprod clean package
 

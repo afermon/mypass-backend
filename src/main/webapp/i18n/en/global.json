@@ -10,7 +10,6 @@
                 "main": "Entities",
                 "secret": "Secret",
                 "folder": "Folder",
-                "notification": "Notification",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

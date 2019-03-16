@@ -3,14 +3,14 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "mypass": {
+        "my-pass": {
             "root": "",
             "sourceRoot": "src/main/webapp",
             "projectType": "application",
             "architect": {}
         }
     },
-    "defaultProject": "mypass",
+    "defaultProject": "my-pass",
     "cli": {
         "packageManager": "npm"
     },

@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-folder-heading" jhiTranslate="mypassApp.folder.home.createOrEditLabel">Create or edit a Folder</h2>
+            <h2 id="jhi-folder-heading" jhiTranslate="myPassApp.folder.home.createOrEditLabel">Create or edit a Folder</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!folder.id">
@@ -10,7 +10,7 @@
                         [(ngModel)]="folder.id" readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="mypassApp.folder.name" for="field_name">Name</label>
+                    <label class="form-control-label" jhiTranslate="myPassApp.folder.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                         [(ngModel)]="folder.name" required minlength="1" maxlength="250"/>
                     <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="mypassApp.folder.key" for="field_key">Key</label>
+                    <label class="form-control-label" jhiTranslate="myPassApp.folder.key" for="field_key">Key</label>
                     <input type="text" class="form-control" name="key" id="field_key"
                         [(ngModel)]="folder.key" required minlength="10" maxlength="250"/>
                     <div [hidden]="!(editForm.controls.key?.dirty && editForm.controls.key?.invalid)">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="mypassApp.folder.modified" for="field_modified">Modified</label>
+                    <label class="form-control-label" jhiTranslate="myPassApp.folder.modified" for="field_modified">Modified</label>
                     <div class="d-flex">
                         <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="modified"
                         required/>
@@ -66,14 +66,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="mypassApp.folder.owner" for="field_owner">Owner</label>
+                    <label class="form-control-label" jhiTranslate="myPassApp.folder.owner" for="field_owner">Owner</label>
                     <select class="form-control" id="field_owner" name="owner" [(ngModel)]="folder.ownerId" >
                         <option [ngValue]="null"></option>
                         <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label jhiTranslate="mypassApp.folder.sharedWith" for="field_sharedWith">Shared With</label>
+                    <label jhiTranslate="myPassApp.folder.sharedWith" for="field_sharedWith">Shared With</label>
                     <select class="form-control" id="field_sharedWith" multiple name="sharedWith" [(ngModel)]="folder.sharedWiths">
                         <option [ngValue]="getSelected(folder.sharedWiths, userOption)" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
                     </select>
