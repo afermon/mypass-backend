@@ -6,6 +6,7 @@ import com.cosmicode.mypass.domain.Folder;
 import com.cosmicode.mypass.repository.FolderRepository;
 import com.cosmicode.mypass.service.FolderService;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
 import com.cosmicode.mypass.service.dto.FolderDTO;
 import com.cosmicode.mypass.service.mapper.FolderMapper;
 import com.cosmicode.mypass.web.rest.errors.ExceptionTranslator;
@@ -82,6 +83,12 @@ public class FolderResourceIntTest {
     private SecretService secretServiceMock;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserService userServiceMock;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -103,7 +110,7 @@ public class FolderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FolderResource folderResource = new FolderResource(folderService, secretService);
+        final FolderResource folderResource = new FolderResource(folderService, secretService, userService);
         this.restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -246,7 +253,7 @@ public class FolderResourceIntTest {
     
     @SuppressWarnings({"unchecked"})
     public void getAllFoldersWithEagerRelationshipsIsEnabled() throws Exception {
-        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock);
+        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock, userServiceMock);
         when(folderServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         MockMvc restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
@@ -263,7 +270,7 @@ public class FolderResourceIntTest {
 
     @SuppressWarnings({"unchecked"})
     public void getAllFoldersWithEagerRelationshipsIsNotEnabled() throws Exception {
-        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock);
+        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock, userServiceMock);
             when(folderServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
             MockMvc restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)

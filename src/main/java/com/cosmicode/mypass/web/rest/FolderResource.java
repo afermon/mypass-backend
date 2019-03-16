@@ -1,8 +1,11 @@
 package com.cosmicode.mypass.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.mypass.security.SecurityUtils;
 import com.cosmicode.mypass.service.FolderService;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
+import com.cosmicode.mypass.service.dto.UserDTO;
 import com.cosmicode.mypass.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.mypass.web.rest.util.HeaderUtil;
 import com.cosmicode.mypass.service.dto.FolderDTO;
@@ -19,6 +22,7 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Folder.
@@ -35,9 +39,12 @@ public class FolderResource {
 
     private final SecretService secretService;
 
-    public FolderResource(FolderService folderService, SecretService secretService) {
+    private final UserService userService;
+
+    public FolderResource(FolderService folderService, SecretService secretService, UserService userService) {
         this.folderService = folderService;
         this.secretService = secretService;
+        this.userService = userService;
     }
 
     /**
@@ -140,6 +147,48 @@ public class FolderResource {
             }
         }
         return folders;
+    }
+
+    /**
+     * POST  /folders/share/:id : share the "id" folder.
+     *
+     * @param id the id of the folderDTO to share
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @PostMapping("/folders/share/{id}")
+    @Timed
+    public ResponseEntity<FolderDTO> shareFolder(@PathVariable Long id, @RequestBody String mail) {
+        log.info("Share folder with: ->" + mail + "<-");
+        mail = mail.replace("\"", "");
+
+        log.debug("REST request to share Folder : {}", id);
+
+        Optional<FolderDTO> folder = folderService.findOne(id);
+
+        if (!folder.isPresent()) return ResponseEntity.notFound().build();
+
+        FolderDTO folderDTO = folder.get();
+
+        if(!folderDTO.getOwnerLogin().equals(SecurityUtils.getCurrentUserLogin().get()))
+            return ResponseEntity.badRequest().build();
+
+        Optional<UserDTO> user = userService.getUserWithAuthoritiesByLogin(mail).map(UserDTO::new);
+
+        if (!user.isPresent()) return ResponseEntity.notFound().build();
+
+        Set<UserDTO> sharedWiths = folderDTO.getSharedWiths();
+
+        if(sharedWiths.isEmpty()) sharedWiths =  new HashSet<>();
+
+        sharedWiths.add(user.get());
+
+        folderDTO.setSharedWiths(sharedWiths);
+
+        FolderDTO result = folderService.save(folderDTO);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, folderDTO.getId().toString()))
+            .body(result);
     }
 
 }
