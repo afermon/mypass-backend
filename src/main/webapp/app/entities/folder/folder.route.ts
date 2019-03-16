@@ -34,7 +34,7 @@ export const folderRoute: Routes = [
         component: FolderComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.folder.home.title'
+            pageTitle: 'myPassApp.folder.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -46,7 +46,7 @@ export const folderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.folder.home.title'
+            pageTitle: 'myPassApp.folder.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -58,7 +58,7 @@ export const folderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.folder.home.title'
+            pageTitle: 'myPassApp.folder.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -70,7 +70,7 @@ export const folderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.folder.home.title'
+            pageTitle: 'myPassApp.folder.home.title'
         },
         canActivate: [UserRouteAccessService]
     }
@@ -85,7 +85,7 @@ export const folderPopupRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.folder.home.title'
+            pageTitle: 'myPassApp.folder.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'

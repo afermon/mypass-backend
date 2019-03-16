@@ -38,7 +38,7 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:file:./target/h2db/db/mypass;DB_CLOSE_DELAY=-1
-        username: mypass
+        username: MyPass
         password:
         hikari:
             auto-commit: false
