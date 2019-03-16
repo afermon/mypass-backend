@@ -1,6 +1,7 @@
 package com.cosmicode.mypass.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.mypass.domain.User;
 import com.cosmicode.mypass.security.SecurityUtils;
 import com.cosmicode.mypass.service.FolderService;
 import com.cosmicode.mypass.service.SecretService;
@@ -61,6 +62,15 @@ public class FolderResource {
         if (folderDTO.getId() != null) {
             throw new BadRequestAlertException("A new folder cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        try {
+            User user = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+            folderDTO.setOwnerId(user.getId());
+            folderDTO.setOwnerLogin(user.getLogin());
+        } catch (Exception e){
+            log.error(e.toString());
+        }
+
         FolderDTO result = folderService.save(folderDTO);
         return ResponseEntity.created(new URI("/api/folders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

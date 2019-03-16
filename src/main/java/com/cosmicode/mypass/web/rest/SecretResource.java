@@ -1,7 +1,10 @@
 package com.cosmicode.mypass.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.mypass.domain.User;
+import com.cosmicode.mypass.security.SecurityUtils;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
 import com.cosmicode.mypass.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.mypass.web.rest.util.HeaderUtil;
 import com.cosmicode.mypass.service.dto.SecretDTO;
@@ -31,8 +34,11 @@ public class SecretResource {
 
     private final SecretService secretService;
 
-    public SecretResource(SecretService secretService) {
+    private final UserService userService;
+
+    public SecretResource(SecretService secretService, UserService userService) {
         this.secretService = secretService;
+        this.userService = userService;
     }
 
     /**
@@ -49,6 +55,15 @@ public class SecretResource {
         if (secretDTO.getId() != null) {
             throw new BadRequestAlertException("A new secret cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        try {
+            User user = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+            secretDTO.setOwnerId(user.getId());
+            secretDTO.setOwnerLogin(user.getLogin());
+        } catch (Exception e){
+            log.error(e.toString());
+        }
+
         SecretDTO result = secretService.save(secretDTO);
         return ResponseEntity.created(new URI("/api/secrets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
