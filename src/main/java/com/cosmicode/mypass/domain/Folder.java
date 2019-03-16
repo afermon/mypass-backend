@@ -30,16 +30,15 @@ public class Folder implements Serializable {
 
     @NotNull
     @Size(min = 1, max = 250)
-    @Column(name = "name", length = 250, nullable = false, unique = true)
+    @Column(name = "name", length = 250, nullable = false)
     private String name;
 
     @NotNull
-    @Size(min = 10, max = 250)
-    @Column(name = "jhi_key", length = 250, nullable = false)
+    @Size(min = 16, max = 24)
+    @Column(name = "jhi_key", length = 24, nullable = false)
     private String key;
 
-    @NotNull
-    @Column(name = "modified", nullable = false)
+    @Column(name = "modified")
     private Instant modified;
 
     @ManyToOne

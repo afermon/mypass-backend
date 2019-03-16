@@ -44,12 +44,11 @@ public class Secret implements Serializable {
     @Column(name = "jhi_password", length = 250, nullable = false)
     private String password;
 
-    @Size(min = 4, max = 250)
+    @Size(max = 250)
     @Column(name = "notes", length = 250)
     private String notes;
 
-    @NotNull
-    @Column(name = "modified", nullable = false)
+    @Column(name = "modified")
     private Instant modified;
 
     @ManyToOne

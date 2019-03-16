@@ -23,15 +23,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(250)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_folder_name" />
+                <constraints nullable="false" />
             </column>
 
-            <column name="jhi_key" type="varchar(250)">
+            <column name="jhi_key" type="varchar(24)">
                 <constraints nullable="false" />
             </column>
 
             <column name="modified" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="owner_id" type="bigint">

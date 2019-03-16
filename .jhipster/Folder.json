@@ -5,7 +5,6 @@
             "fieldName": "name",
             "fieldType": "String",
             "fieldValidateRules": [
-                "unique",
                 "required",
                 "minlength",
                 "maxlength"
@@ -21,15 +20,12 @@
                 "minlength",
                 "maxlength"
             ],
-            "fieldValidateRulesMinlength": 10,
-            "fieldValidateRulesMaxlength": 250
+            "fieldValidateRulesMinlength": 16,
+            "fieldValidateRulesMaxlength": 24
         },
         {
             "fieldName": "modified",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Instant"
         }
     ],
     "relationships": [

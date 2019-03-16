@@ -6,6 +6,7 @@ import com.cosmicode.mypass.domain.Folder;
 import com.cosmicode.mypass.repository.FolderRepository;
 import com.cosmicode.mypass.service.FolderService;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
 import com.cosmicode.mypass.service.dto.FolderDTO;
 import com.cosmicode.mypass.service.mapper.FolderMapper;
 import com.cosmicode.mypass.web.rest.errors.ExceptionTranslator;
@@ -54,8 +55,8 @@ public class FolderResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_KEY = "AAAAAAAAAA";
-    private static final String UPDATED_KEY = "BBBBBBBBBB";
+    private static final String DEFAULT_KEY = "AAAAAAAAAAAAAAAA";
+    private static final String UPDATED_KEY = "BBBBBBBBBBBBBBBB";
 
     private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -82,6 +83,12 @@ public class FolderResourceIntTest {
     private SecretService secretServiceMock;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserService userServiceMock;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -103,7 +110,7 @@ public class FolderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FolderResource folderResource = new FolderResource(folderService, secretService);
+        final FolderResource folderResource = new FolderResource(folderService, secretService, userService);
         this.restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -211,25 +218,6 @@ public class FolderResourceIntTest {
 
     @Test
     @Transactional
-    public void checkModifiedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = folderRepository.findAll().size();
-        // set the field null
-        folder.setModified(null);
-
-        // Create the Folder, which fails.
-        FolderDTO folderDTO = folderMapper.toDto(folder);
-
-        restFolderMockMvc.perform(post("/api/folders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(folderDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Folder> folderList = folderRepository.findAll();
-        assertThat(folderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllFolders() throws Exception {
         // Initialize the database
         folderRepository.saveAndFlush(folder);
@@ -246,7 +234,7 @@ public class FolderResourceIntTest {
     
     @SuppressWarnings({"unchecked"})
     public void getAllFoldersWithEagerRelationshipsIsEnabled() throws Exception {
-        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock);
+        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock, userServiceMock);
         when(folderServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         MockMvc restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
@@ -263,7 +251,7 @@ public class FolderResourceIntTest {
 
     @SuppressWarnings({"unchecked"})
     public void getAllFoldersWithEagerRelationshipsIsNotEnabled() throws Exception {
-        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock);
+        FolderResource folderResource = new FolderResource(folderServiceMock, secretServiceMock, userServiceMock);
             when(folderServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
             MockMvc restFolderMockMvc = MockMvcBuilders.standaloneSetup(folderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)

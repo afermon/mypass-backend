@@ -99,7 +99,7 @@ public class FolderService {
 
     public List<FolderDTO> getCurrentUserFolders(){
         log.debug("Request to get Secrets for current user");
-        return folderRepository.findByOwnerIsCurrentUser().stream()
+        return folderRepository.findByCurrentUserHasAccess().stream()
             .map(folderMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
