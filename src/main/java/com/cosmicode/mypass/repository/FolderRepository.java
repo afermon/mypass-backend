@@ -20,7 +20,7 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     @Query("select folder from Folder folder where folder.owner.login = ?#{principal.username}")
     List<Folder> findByOwnerIsCurrentUser();
 
-    @Query("select folder from Folder folder inner join folder.sharedWiths sharedWiths where folder.owner.login = ?#{principal.username} or sharedWiths.login = ?#{principal.username}")
+    @Query("select distinct folder from Folder folder inner join folder.sharedWiths sharedWiths where folder.owner.login = ?#{principal.username} or sharedWiths.login = ?#{principal.username}")
     List<Folder> findByCurrentUserHasAccess();
 
     @Query(value = "select distinct folder from Folder folder left join fetch folder.sharedWiths",
