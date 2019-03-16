@@ -19,10 +19,9 @@ public class FolderDTO implements Serializable {
     private String name;
 
     @NotNull
-    @Size(min = 10, max = 250)
+    @Size(min = 16, max = 24)
     private String key;
 
-    @NotNull
     private Instant modified;
 
     private Long ownerId;

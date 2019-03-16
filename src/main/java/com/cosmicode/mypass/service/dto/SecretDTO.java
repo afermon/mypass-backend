@@ -27,10 +27,9 @@ public class SecretDTO implements Serializable {
     @Size(min = 4, max = 250)
     private String password;
 
-    @Size(min = 4, max = 250)
+    @Size(max = 250)
     private String notes;
 
-    @NotNull
     private Instant modified;
 
     private Long folderId;

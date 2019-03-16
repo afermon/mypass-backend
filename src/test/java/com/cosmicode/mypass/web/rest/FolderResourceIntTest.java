@@ -55,8 +55,8 @@ public class FolderResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_KEY = "AAAAAAAAAA";
-    private static final String UPDATED_KEY = "BBBBBBBBBB";
+    private static final String DEFAULT_KEY = "AAAAAAAAAAAAAAAA";
+    private static final String UPDATED_KEY = "BBBBBBBBBBBBBBBB";
 
     private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -203,25 +203,6 @@ public class FolderResourceIntTest {
         int databaseSizeBeforeTest = folderRepository.findAll().size();
         // set the field null
         folder.setKey(null);
-
-        // Create the Folder, which fails.
-        FolderDTO folderDTO = folderMapper.toDto(folder);
-
-        restFolderMockMvc.perform(post("/api/folders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(folderDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Folder> folderList = folderRepository.findAll();
-        assertThat(folderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkModifiedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = folderRepository.findAll().size();
-        // set the field null
-        folder.setModified(null);
 
         // Create the Folder, which fails.
         FolderDTO folderDTO = folderMapper.toDto(folder);

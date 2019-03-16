@@ -227,25 +227,6 @@ public class SecretResourceIntTest {
 
     @Test
     @Transactional
-    public void checkModifiedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = secretRepository.findAll().size();
-        // set the field null
-        secret.setModified(null);
-
-        // Create the Secret, which fails.
-        SecretDTO secretDTO = secretMapper.toDto(secret);
-
-        restSecretMockMvc.perform(post("/api/secrets")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(secretDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Secret> secretList = secretRepository.findAll();
-        assertThat(secretList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllSecrets() throws Exception {
         // Initialize the database
         secretRepository.saveAndFlush(secret);
