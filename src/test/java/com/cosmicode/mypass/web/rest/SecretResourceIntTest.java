@@ -5,6 +5,7 @@ import com.cosmicode.mypass.MyPassApp;
 import com.cosmicode.mypass.domain.Secret;
 import com.cosmicode.mypass.repository.SecretRepository;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
 import com.cosmicode.mypass.service.dto.SecretDTO;
 import com.cosmicode.mypass.service.mapper.SecretMapper;
 import com.cosmicode.mypass.web.rest.errors.ExceptionTranslator;
@@ -73,6 +74,9 @@ public class SecretResourceIntTest {
     private SecretService secretService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -94,7 +98,7 @@ public class SecretResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SecretResource secretResource = new SecretResource(secretService);
+        final SecretResource secretResource = new SecretResource(secretService, userService);
         this.restSecretMockMvc = MockMvcBuilders.standaloneSetup(secretResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
