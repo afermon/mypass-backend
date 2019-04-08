@@ -15,7 +15,6 @@ type EntityArrayResponseType = HttpResponse<ISecret[]>;
 @Injectable({ providedIn: 'root' })
 export class SecretService {
     public resourceUrl = SERVER_API_URL + 'api/secrets';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/secrets';
 
     constructor(protected http: HttpClient) {}
 
@@ -50,16 +49,8 @@ export class SecretService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http
-            .get<ISecret[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-    }
-
     protected convertDateFromClient(secret: ISecret): ISecret {
         const copy: ISecret = Object.assign({}, secret, {
-            created: secret.created != null && secret.created.isValid() ? secret.created.toJSON() : null,
             modified: secret.modified != null && secret.modified.isValid() ? secret.modified.toJSON() : null
         });
         return copy;
@@ -67,7 +58,6 @@ export class SecretService {
 
     protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
         if (res.body) {
-            res.body.created = res.body.created != null ? moment(res.body.created) : null;
             res.body.modified = res.body.modified != null ? moment(res.body.modified) : null;
         }
         return res;
@@ -76,7 +66,6 @@ export class SecretService {
     protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
         if (res.body) {
             res.body.forEach((secret: ISecret) => {
-                secret.created = secret.created != null ? moment(secret.created) : null;
                 secret.modified = secret.modified != null ? moment(secret.modified) : null;
             });
         }

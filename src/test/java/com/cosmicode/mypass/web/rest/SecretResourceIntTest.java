@@ -4,8 +4,8 @@ import com.cosmicode.mypass.MyPassApp;
 
 import com.cosmicode.mypass.domain.Secret;
 import com.cosmicode.mypass.repository.SecretRepository;
-import com.cosmicode.mypass.repository.search.SecretSearchRepository;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
 import com.cosmicode.mypass.service.dto.SecretDTO;
 import com.cosmicode.mypass.service.mapper.SecretMapper;
 import com.cosmicode.mypass.web.rest.errors.ExceptionTranslator;
@@ -28,15 +28,12 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
 
 
 import static com.cosmicode.mypass.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,9 +61,6 @@ public class SecretResourceIntTest {
     private static final String DEFAULT_NOTES = "AAAAAAAAAA";
     private static final String UPDATED_NOTES = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
     private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -79,13 +73,8 @@ public class SecretResourceIntTest {
     @Autowired
     private SecretService secretService;
 
-    /**
-     * This repository is mocked in the com.cosmicode.mypass.repository.search test package.
-     *
-     * @see com.cosmicode.mypass.repository.search.SecretSearchRepositoryMockConfiguration
-     */
     @Autowired
-    private SecretSearchRepository mockSecretSearchRepository;
+    private UserService userService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -109,7 +98,7 @@ public class SecretResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SecretResource secretResource = new SecretResource(secretService);
+        final SecretResource secretResource = new SecretResource(secretService, userService);
         this.restSecretMockMvc = MockMvcBuilders.standaloneSetup(secretResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -131,7 +120,6 @@ public class SecretResourceIntTest {
             .username(DEFAULT_USERNAME)
             .password(DEFAULT_PASSWORD)
             .notes(DEFAULT_NOTES)
-            .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
         return secret;
     }
@@ -162,11 +150,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(DEFAULT_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(DEFAULT_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testSecret.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testSecret.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(1)).save(testSecret);
     }
 
     @Test
@@ -187,9 +170,6 @@ public class SecretResourceIntTest {
         // Validate the Secret in the database
         List<Secret> secretList = secretRepository.findAll();
         assertThat(secretList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(0)).save(secret);
     }
 
     @Test
@@ -251,44 +231,6 @@ public class SecretResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = secretRepository.findAll().size();
-        // set the field null
-        secret.setCreated(null);
-
-        // Create the Secret, which fails.
-        SecretDTO secretDTO = secretMapper.toDto(secret);
-
-        restSecretMockMvc.perform(post("/api/secrets")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(secretDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Secret> secretList = secretRepository.findAll();
-        assertThat(secretList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkModifiedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = secretRepository.findAll().size();
-        // set the field null
-        secret.setModified(null);
-
-        // Create the Secret, which fails.
-        SecretDTO secretDTO = secretMapper.toDto(secret);
-
-        restSecretMockMvc.perform(post("/api/secrets")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(secretDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Secret> secretList = secretRepository.findAll();
-        assertThat(secretList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllSecrets() throws Exception {
         // Initialize the database
         secretRepository.saveAndFlush(secret);
@@ -303,7 +245,6 @@ public class SecretResourceIntTest {
             .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME.toString())))
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD.toString())))
             .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
     
@@ -323,7 +264,6 @@ public class SecretResourceIntTest {
             .andExpect(jsonPath("$.username").value(DEFAULT_USERNAME.toString()))
             .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD.toString()))
             .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()))
-            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
             .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
     }
 
@@ -353,7 +293,6 @@ public class SecretResourceIntTest {
             .username(UPDATED_USERNAME)
             .password(UPDATED_PASSWORD)
             .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
         SecretDTO secretDTO = secretMapper.toDto(updatedSecret);
 
@@ -371,11 +310,6 @@ public class SecretResourceIntTest {
         assertThat(testSecret.getUsername()).isEqualTo(UPDATED_USERNAME);
         assertThat(testSecret.getPassword()).isEqualTo(UPDATED_PASSWORD);
         assertThat(testSecret.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testSecret.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testSecret.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(1)).save(testSecret);
     }
 
     @Test
@@ -395,9 +329,6 @@ public class SecretResourceIntTest {
         // Validate the Secret in the database
         List<Secret> secretList = secretRepository.findAll();
         assertThat(secretList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(0)).save(secret);
     }
 
     @Test
@@ -416,30 +347,6 @@ public class SecretResourceIntTest {
         // Validate the database is empty
         List<Secret> secretList = secretRepository.findAll();
         assertThat(secretList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Secret in Elasticsearch
-        verify(mockSecretSearchRepository, times(1)).deleteById(secret.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchSecret() throws Exception {
-        // Initialize the database
-        secretRepository.saveAndFlush(secret);
-        when(mockSecretSearchRepository.search(queryStringQuery("id:" + secret.getId())))
-            .thenReturn(Collections.singletonList(secret));
-        // Search the secret
-        restSecretMockMvc.perform(get("/api/_search/secrets?query=id:" + secret.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(secret.getId().intValue())))
-            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME)))
-            .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

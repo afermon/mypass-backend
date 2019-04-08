@@ -3,34 +3,23 @@ entity Secret {
     name String required minlength(1) maxlength(250),
     username String required minlength(1) maxlength(250),
     password String required minlength(4) maxlength(250),
-    notes String minlength(4) maxlength(250),
-    created Instant required,
-    modified Instant required
+    notes String maxlength(250),
+    modified Instant
 }
 
 entity Folder {
-	name String unique required minlength(1) maxlength(250),
-	icon String required minlength(1) maxlength(20)
-    key String required minlength(10) maxlength(250),
-    created Instant required,
-    modified Instant required
+	name String required minlength(1) maxlength(250),
+    key String required minlength(16) maxlength(24),
+    modified Instant
 }
 
-entity Notification {
-	title String required minlength(1) maxlength(250),
-    content String required minlength(1) maxlength(250),
-    created Instant required,
-    read Boolean required
-}
-
-relationship OneToMany{
-    Folder{secrets} to Secret{folder(name)}
+relationship ManyToOne {
+    Secret{folder(name)} to Folder{secrets}
 }
 
 relationship ManyToOne{
 	Folder{owner(login)} to User,
-	Secret{owner(login)} to User,
-	Notification{user(login)} to User
+	Secret{owner(login)} to User
 }
 
 relationship ManyToMany{

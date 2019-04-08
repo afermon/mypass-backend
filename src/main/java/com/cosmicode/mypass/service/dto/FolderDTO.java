@@ -19,17 +19,9 @@ public class FolderDTO implements Serializable {
     private String name;
 
     @NotNull
-    @Size(min = 1, max = 20)
-    private String icon;
-
-    @NotNull
-    @Size(min = 10, max = 250)
+    @Size(min = 16, max = 24)
     private String key;
 
-    @NotNull
-    private Instant created;
-
-    @NotNull
     private Instant modified;
 
     private Long ownerId;
@@ -37,6 +29,8 @@ public class FolderDTO implements Serializable {
     private String ownerLogin;
 
     private Set<UserDTO> sharedWiths = new HashSet<>();
+
+    private  Set<SecretDTO> secrets = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -54,28 +48,12 @@ public class FolderDTO implements Serializable {
         this.name = name;
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
     public String getKey() {
         return key;
     }
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
     }
 
     public Instant getModified() {
@@ -110,6 +88,14 @@ public class FolderDTO implements Serializable {
         this.sharedWiths = users;
     }
 
+    public Set<SecretDTO> getSecrets() {
+        return secrets;
+    }
+
+    public void setSecrets(Set<SecretDTO> secrets) {
+        this.secrets = secrets;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -136,9 +122,7 @@ public class FolderDTO implements Serializable {
         return "FolderDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", icon='" + getIcon() + "'" +
             ", key='" + getKey() + "'" +
-            ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
             ", owner=" + getOwnerId() +
             ", owner='" + getOwnerLogin() + "'" +

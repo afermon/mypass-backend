@@ -2,7 +2,6 @@ package com.cosmicode.mypass.service;
 
 import com.cosmicode.mypass.domain.Secret;
 import com.cosmicode.mypass.repository.SecretRepository;
-import com.cosmicode.mypass.repository.search.SecretSearchRepository;
 import com.cosmicode.mypass.service.dto.SecretDTO;
 import com.cosmicode.mypass.service.mapper.SecretMapper;
 import org.slf4j.Logger;
@@ -11,13 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Secret.
@@ -32,12 +29,9 @@ public class SecretService {
 
     private final SecretMapper secretMapper;
 
-    private final SecretSearchRepository secretSearchRepository;
-
-    public SecretService(SecretRepository secretRepository, SecretMapper secretMapper, SecretSearchRepository secretSearchRepository) {
+    public SecretService(SecretRepository secretRepository, SecretMapper secretMapper) {
         this.secretRepository = secretRepository;
         this.secretMapper = secretMapper;
-        this.secretSearchRepository = secretSearchRepository;
     }
 
     /**
@@ -50,10 +44,9 @@ public class SecretService {
         log.debug("Request to save Secret : {}", secretDTO);
 
         Secret secret = secretMapper.toEntity(secretDTO);
+        secret.setModified(Instant.now());
         secret = secretRepository.save(secret);
-        SecretDTO result = secretMapper.toDto(secret);
-        secretSearchRepository.save(secret);
-        return result;
+        return secretMapper.toDto(secret);
     }
 
     /**
@@ -91,21 +84,19 @@ public class SecretService {
     public void delete(Long id) {
         log.debug("Request to delete Secret : {}", id);
         secretRepository.deleteById(id);
-        secretSearchRepository.deleteById(id);
     }
 
-    /**
-     * Search for the secret corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<SecretDTO> search(String query) {
-        log.debug("Request to search Secrets for query {}", query);
-        return StreamSupport
-            .stream(secretSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+    public List<SecretDTO> getCurrentUserSecrets(){
+        log.debug("Request to get Secrets for current user");
+        return secretRepository.findByOwnerIsCurrentUser().stream()
             .map(secretMapper::toDto)
-            .collect(Collectors.toList());
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public List<SecretDTO> getFolderSecrets(Long id){
+        log.debug("Request to get Secrets for folder");
+        return secretRepository.findByFolderId(id).stream()
+            .map(secretMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 }

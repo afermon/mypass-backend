@@ -5,24 +5,12 @@
             "fieldName": "name",
             "fieldType": "String",
             "fieldValidateRules": [
-                "unique",
                 "required",
                 "minlength",
                 "maxlength"
             ],
             "fieldValidateRulesMinlength": 1,
             "fieldValidateRulesMaxlength": 250
-        },
-        {
-            "fieldName": "icon",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required",
-                "minlength",
-                "maxlength"
-            ],
-            "fieldValidateRulesMinlength": 1,
-            "fieldValidateRulesMaxlength": 20
         },
         {
             "fieldName": "key",
@@ -32,31 +20,15 @@
                 "minlength",
                 "maxlength"
             ],
-            "fieldValidateRulesMinlength": 10,
-            "fieldValidateRulesMaxlength": 250
-        },
-        {
-            "fieldName": "created",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldValidateRulesMinlength": 16,
+            "fieldValidateRulesMaxlength": 24
         },
         {
             "fieldName": "modified",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Instant"
         }
     ],
     "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "secrets",
-            "otherEntityName": "secret",
-            "otherEntityRelationshipName": "folder"
-        },
         {
             "relationshipType": "many-to-one",
             "relationshipName": "owner",
@@ -70,9 +42,15 @@
             "otherEntityName": "user",
             "otherEntityField": "login",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "secrets",
+            "otherEntityName": "secret",
+            "otherEntityRelationshipName": "folder"
         }
     ],
-    "changelogDate": "20190303021703",
+    "changelogDate": "20190316031222",
     "entityTableName": "folder",
     "dto": "mapstruct",
     "pagination": "no",

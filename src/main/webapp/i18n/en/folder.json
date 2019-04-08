@@ -1,11 +1,10 @@
 {
-    "mypassApp": {
+    "myPassApp": {
         "folder": {
             "home": {
                 "title": "Folders",
                 "createLabel": "Create a new Folder",
-                "createOrEditLabel": "Create or edit a Folder",
-                "search": "Search for Folder"
+                "createOrEditLabel": "Create or edit a Folder"
             },
             "created": "A new Folder is created with identifier {{ param }}",
             "updated": "A Folder is updated with identifier {{ param }}",
@@ -17,13 +16,11 @@
                 "title": "Folder"
             },
             "name": "Name",
-            "icon": "Icon",
             "key": "Key",
-            "created": "Created",
             "modified": "Modified",
-            "secrets": "Secrets",
             "owner": "Owner",
-            "sharedWith": "Shared With"
+            "sharedWith": "Shared With",
+            "secrets": "Secrets"
         }
     }
 }

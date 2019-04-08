@@ -8,17 +8,17 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Secret and its DTO SecretDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, FolderMapper.class})
+@Mapper(componentModel = "spring", uses = {FolderMapper.class, UserMapper.class})
 public interface SecretMapper extends EntityMapper<SecretDTO, Secret> {
 
-    @Mapping(source = "owner.id", target = "ownerId")
-    @Mapping(source = "owner.login", target = "ownerLogin")
     @Mapping(source = "folder.id", target = "folderId")
     @Mapping(source = "folder.name", target = "folderName")
+    @Mapping(source = "owner.id", target = "ownerId")
+    @Mapping(source = "owner.login", target = "ownerLogin")
     SecretDTO toDto(Secret secret);
 
-    @Mapping(source = "ownerId", target = "owner")
     @Mapping(source = "folderId", target = "folder")
+    @Mapping(source = "ownerId", target = "owner")
     Secret toEntity(SecretDTO secretDTO);
 
     default Secret fromId(Long id) {

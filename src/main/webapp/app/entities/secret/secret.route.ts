@@ -34,7 +34,7 @@ export const secretRoute: Routes = [
         component: SecretComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.secret.home.title'
+            pageTitle: 'myPassApp.secret.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -46,7 +46,7 @@ export const secretRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.secret.home.title'
+            pageTitle: 'myPassApp.secret.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -58,7 +58,7 @@ export const secretRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.secret.home.title'
+            pageTitle: 'myPassApp.secret.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -70,7 +70,7 @@ export const secretRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.secret.home.title'
+            pageTitle: 'myPassApp.secret.home.title'
         },
         canActivate: [UserRouteAccessService]
     }
@@ -85,7 +85,7 @@ export const secretPopupRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'mypassApp.secret.home.title'
+            pageTitle: 'myPassApp.secret.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'

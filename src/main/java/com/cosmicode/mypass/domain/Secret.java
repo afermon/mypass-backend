@@ -7,7 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -18,7 +17,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "secret")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "secret")
 public class Secret implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,25 +44,20 @@ public class Secret implements Serializable {
     @Column(name = "jhi_password", length = 250, nullable = false)
     private String password;
 
-    @Size(min = 4, max = 250)
+    @Size(max = 250)
     @Column(name = "notes", length = 250)
     private String notes;
 
-    @NotNull
-    @Column(name = "created", nullable = false)
-    private Instant created;
-
-    @NotNull
-    @Column(name = "modified", nullable = false)
+    @Column(name = "modified")
     private Instant modified;
-
-    @ManyToOne
-    @JsonIgnoreProperties("")
-    private User owner;
 
     @ManyToOne
     @JsonIgnoreProperties("secrets")
     private Folder folder;
+
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -140,19 +133,6 @@ public class Secret implements Serializable {
         this.notes = notes;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
-
-    public Secret created(Instant created) {
-        this.created = created;
-        return this;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
     public Instant getModified() {
         return modified;
     }
@@ -166,19 +146,6 @@ public class Secret implements Serializable {
         this.modified = modified;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public Secret owner(User user) {
-        this.owner = user;
-        return this;
-    }
-
-    public void setOwner(User user) {
-        this.owner = user;
-    }
-
     public Folder getFolder() {
         return folder;
     }
@@ -190,6 +157,19 @@ public class Secret implements Serializable {
 
     public void setFolder(Folder folder) {
         this.folder = folder;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Secret owner(User user) {
+        this.owner = user;
+        return this;
+    }
+
+    public void setOwner(User user) {
+        this.owner = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -222,7 +202,6 @@ public class Secret implements Serializable {
             ", username='" + getUsername() + "'" +
             ", password='" + getPassword() + "'" +
             ", notes='" + getNotes() + "'" +
-            ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
             "}";
     }

@@ -1,7 +1,10 @@
 package com.cosmicode.mypass.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.mypass.domain.User;
+import com.cosmicode.mypass.security.SecurityUtils;
 import com.cosmicode.mypass.service.SecretService;
+import com.cosmicode.mypass.service.UserService;
 import com.cosmicode.mypass.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.mypass.web.rest.util.HeaderUtil;
 import com.cosmicode.mypass.service.dto.SecretDTO;
@@ -17,9 +20,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Secret.
@@ -34,8 +34,11 @@ public class SecretResource {
 
     private final SecretService secretService;
 
-    public SecretResource(SecretService secretService) {
+    private final UserService userService;
+
+    public SecretResource(SecretService secretService, UserService userService) {
         this.secretService = secretService;
+        this.userService = userService;
     }
 
     /**
@@ -52,6 +55,15 @@ public class SecretResource {
         if (secretDTO.getId() != null) {
             throw new BadRequestAlertException("A new secret cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        try {
+            User user = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+            secretDTO.setOwnerId(user.getId());
+            secretDTO.setOwnerLogin(user.getLogin());
+        } catch (Exception e){
+            log.error(e.toString());
+        }
+
         SecretDTO result = secretService.save(secretDTO);
         return ResponseEntity.created(new URI("/api/secrets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -121,17 +133,27 @@ public class SecretResource {
     }
 
     /**
-     * SEARCH  /_search/secrets?query=:query : search for the secret corresponding
-     * to the query.
+     * GET  /secrets/user : get all current user secrets.
      *
-     * @param query the query of the secret search
-     * @return the result of the search
+     * @return the ResponseEntity with status 200 (OK) and the list of secrets in body
      */
-    @GetMapping("/_search/secrets")
+    @GetMapping("/secrets/user")
     @Timed
-    public List<SecretDTO> searchSecrets(@RequestParam String query) {
-        log.debug("REST request to search Secrets for query {}", query);
-        return secretService.search(query);
+    public List<SecretDTO> getCurrentUserSecrets() {
+        log.debug("REST request to get current user Secrets");
+        return secretService.getCurrentUserSecrets();
     }
 
+    /**
+     * GET  /secrets/user : get all current user secrets.
+     *
+     * @param id the id of the folder to retrieve
+     * @return the ResponseEntity with status 200 (OK) and the list of secrets in body
+     */
+    @GetMapping("/secrets/folder/{id}")
+    @Timed
+    public List<SecretDTO> getFolderSecrets(@PathVariable Long id) {
+        log.debug("REST request to get current user Secrets");
+        return secretService.getFolderSecrets(id);
+    }
 }

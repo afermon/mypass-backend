@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cosmicode.mypass</groupId>
-    <artifactId>mypass</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>my-pass</artifactId>
+    <version>2.0.1</version>
     <packaging>war</packaging>
-    <name>MyPass</name>
+    <name>My Pass</name>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->
@@ -291,33 +291,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
-        <!-- Spring Data Jest dependencies for Elasticsearch -->
-        <dependency>
-            <groupId>com.github.vanroy</groupId>
-            <artifactId>spring-boot-starter-data-jest</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- log4j needed to create embedded elasticsearch instance -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <!-- end of Spring Data Jest dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
@@ -582,7 +555,7 @@
                         <driver>org.h2.Driver</driver>
                         <url>jdbc:h2:file:./target/h2db/db/mypass</url>
                         <defaultSchemaName></defaultSchemaName>
-                        <username>mypass</username>
+                        <username>MyPass</username>
                         <password></password>
                         <referenceUrl>hibernate:spring:com.cosmicode.mypass.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>

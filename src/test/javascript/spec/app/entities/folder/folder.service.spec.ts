@@ -25,14 +25,13 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new Folder(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, currentDate);
+            elemDefault = new Folder(0, 'AAAAAAA', 'AAAAAAA', currentDate);
         });
 
         describe('Service methods', async () => {
             it('should find an element', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        created: currentDate.format(DATE_TIME_FORMAT),
                         modified: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
@@ -50,14 +49,12 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         id: 0,
-                        created: currentDate.format(DATE_TIME_FORMAT),
                         modified: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
                 const expected = Object.assign(
                     {
-                        created: currentDate,
                         modified: currentDate
                     },
                     returnedFromService
@@ -74,9 +71,7 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         name: 'BBBBBB',
-                        icon: 'BBBBBB',
                         key: 'BBBBBB',
-                        created: currentDate.format(DATE_TIME_FORMAT),
                         modified: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
@@ -84,7 +79,6 @@ describe('Service Tests', () => {
 
                 const expected = Object.assign(
                     {
-                        created: currentDate,
                         modified: currentDate
                     },
                     returnedFromService
@@ -101,16 +95,13 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         name: 'BBBBBB',
-                        icon: 'BBBBBB',
                         key: 'BBBBBB',
-                        created: currentDate.format(DATE_TIME_FORMAT),
                         modified: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
                 const expected = Object.assign(
                     {
-                        created: currentDate,
                         modified: currentDate
                     },
                     returnedFromService
