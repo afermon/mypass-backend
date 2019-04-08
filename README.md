@@ -1,3 +1,5 @@
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/afermon/mypass-web/blob/master/LICENCE)
+
 # MyPass
 
 Password manager API with angular UI for maintenance, proof of concept. Includes social login.
