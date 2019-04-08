@@ -2,6 +2,8 @@
 
 Password manager API with angular UI for maintenance, proof of concept. Includes social login.
 
+Check out the Android APP that consumes this API at: [afermon/mypass-app](https://github.com/afermon/mypass-app)
+
 This application was generated using JHipster 5.7.2
 
 ![MyPass](https://github.com/afermon/mypass-web/raw/master/landing.png)
