@@ -88,7 +88,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: noreply@prod-mypass-web.herokuapp.com
+        from: noreply@mypass.local
     swagger:
         default-include-pattern: /api/.*
         title: MyPass API

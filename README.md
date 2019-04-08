@@ -1,6 +1,10 @@
 # MyPass
 
-This application was generated using JHipster 5.7.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.7.2](https://www.jhipster.tech/documentation-archive/v5.7.2).
+Password manager API with angular UI for maintenance, proof of concept. Includes social login.
+
+This application was generated using JHipster 5.7.2
+
+![MyPass](https://github.com/afermon/mypass-web/raw/master/landing.png)
 
 ## Development
 
@@ -37,9 +41,9 @@ Service workers are commented by default, to enable them please uncomment the fo
 ```html
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker
-        .register('./service-worker.js')
-        .then(function() { console.log('Service Worker Registered'); });
+        navigator.serviceWorker.register('./service-worker.js').then(function() {
+            console.log('Service Worker Registered');
+        });
     }
 </script>
 ```
